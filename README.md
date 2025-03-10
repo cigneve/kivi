@@ -1,7 +1,7 @@
 <div align="center">
     <h1>
         Traveller Kivi
-        <img src="./doc/logo.svg" align="center" width="30%"/>
+        <img src="./doc/logo.svg" align="center" height="50em"/>
     </h1>
 </div>
 CS102 Term Project
