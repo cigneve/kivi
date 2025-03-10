@@ -28,6 +28,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    public Integer getId() {
+        return id;
+    }
+
     @NotBlank
     private String firstName;
 
@@ -42,6 +46,7 @@ public class User {
     private LocalDate registrationDate;
 
     private User() {
+        this.registrationDate = LocalDate.now();
     }
 
     public UserType getUserType() {
