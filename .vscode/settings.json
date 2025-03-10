@@ -3,7 +3,8 @@
         "dep",
         "User",
         "README",
-        "flake"
+        "flake",
+        "spring"
     ],
     "maven.view": "hierarchical",
     "java.format.settings.url": "eclipse-formatter.xml"
