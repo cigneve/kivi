@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -42,8 +44,9 @@ public class UserController {
     }
 
     @GetMapping("/type/{userType}")
-    public List<User> getUsersByType(@Valid @PathVariable User.UserType userType) {
-        return userService.getUsersByUserType(userType, PageRequest.of(1, 10));
+    public Page<User> getUsersByType(@Valid @PathVariable User.UserType userType,
+            Pageable pageable) {
+        return userService.getUsersByUserType(userType, pageable);
     }
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)

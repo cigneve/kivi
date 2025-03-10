@@ -3,6 +3,7 @@ package com.traveller.kivi.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public List<User> getUsersByUserType(UserType userType, Pageable pageable) {
+    public Page<User> getUsersByUserType(UserType userType, Pageable pageable) {
         return userRepository.getUsersByUserType(userType, pageable);
     }
 
