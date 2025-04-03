@@ -1,6 +1,7 @@
 package com.traveller.kivi.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,4 +29,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public List<User> getFollowersOfUser(Integer userId) {
+        return userRepository.findByFollowing_Id(userId);
+    }
+
+    public boolean userExistsById(Integer userId) {
+        return userRepository.existsById(userId);
+    }
 }

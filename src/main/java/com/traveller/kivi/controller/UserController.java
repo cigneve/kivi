@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -60,5 +61,23 @@ public class UserController {
             errors.put(fieldName, errorMessage);
         });
         return errors;
+    }
+
+    /**
+     * Returns the followers of an User
+     * 
+     * @param userId id of the User
+     * @return List of the followers
+     */
+    @GetMapping("/users/{userId}/followers")
+    public ResponseEntity<List<User>> getUserFollowers(@PathVariable Integer userId) {
+        // First check if the user exists
+        if (!userService.existsById(userId)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Find all users who follow the specified user
+        List<User> followers = userService.getFollowersOfUser(userId);
+        return ResponseEntity.ok(followers);
     }
 }
