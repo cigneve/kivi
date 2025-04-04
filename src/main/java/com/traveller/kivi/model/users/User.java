@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -32,18 +33,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    public Integer getId() {
-        return id;
-    }
-
     @NotBlank
     private String firstName;
 
     @NotBlank
     private String lastName;
 
+    @JsonIgnore
     @ManyToMany
-    @JoinTable(name = "user_follows", joinColumns = @JoinColumn(name = "follower"), inverseJoinColumns = @JoinColumn(name = "followed_user"))
+    @JoinTable(name = "user_follows", joinColumns = @JoinColumn(name = "follower"), inverseJoinColumns = @JoinColumn(name = "target"))
     Set<User> following;
 
     @Enumerated(EnumType.STRING)
@@ -55,6 +53,14 @@ public class User {
 
     private User() {
         this.registrationDate = LocalDate.now();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Set<User> getFollowing() {
+        return following;
     }
 
     public UserType getUserType() {

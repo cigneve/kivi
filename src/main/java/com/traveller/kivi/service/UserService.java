@@ -1,5 +1,6 @@
 package com.traveller.kivi.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -29,8 +30,30 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public List<User> getFollowersOfUser(Integer userId) {
+    public Set<User> getFollowersOfUser(Integer userId) {
         return userRepository.findByFollowing_Id(userId);
+    }
+
+    public Set<User> getFollowedUsers(Integer userId) {
+        return userRepository.findById(userId).orElseThrow().getFollowing();
+    }
+
+    /**
+     * Add an User to other's followed user list.
+     * 
+     * @param followerId   Id of user that follows
+     * @param targetUserId Id of user that is followed
+     * @return if the operation was succesful
+     */
+    public boolean followUser(Integer followerId, Integer targetUserId) {
+        User follower = userRepository.findById(followerId).orElseThrow();
+        User target = userRepository.findById(targetUserId).orElseThrow();
+        Set<User> following = follower.getFollowing();
+        if (following.contains(target)) {
+            return false;
+        }
+        following.add(target);
+        return true;
     }
 
     public boolean userExistsById(Integer userId) {
