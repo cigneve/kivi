@@ -45,21 +45,8 @@ public class Event {
     @OneToOne
     private EventLocation eventLocation;
 
-    /**
-     * @param id
-     * @param eventType
-     * @param startDate
-     * @param endDate
-     */
-    public Event(Integer id, EventType eventType, LocalDate startDate, LocalDate endDate) {
+    public Event() {
         this.created = LocalDate.now();
-        this.id = id;
-        this.eventType = eventType;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
-
-    private Event() {
     }
 
     public EventType getEventType() {
