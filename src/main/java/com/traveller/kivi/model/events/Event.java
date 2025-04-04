@@ -14,6 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -40,6 +41,9 @@ public class Event {
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
+
+    @OneToOne
+    private EventLocation eventLocation;
 
     /**
      * @param id
