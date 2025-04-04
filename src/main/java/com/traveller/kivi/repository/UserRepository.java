@@ -1,6 +1,7 @@
 package com.traveller.kivi.repository;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,7 @@ import com.traveller.kivi.model.users.User.UserType;
 public interface UserRepository extends JpaRepository<User, Integer> {
     List<User> findByUserType(User.UserType userType);
 
-    List<User> getUsersByUserType(UserType userType, Pageable pageable);
+    Page<User> getUsersByUserType(UserType userType, Pageable pageable);
 
-    List<User> findByFollowing_Id(Integer userId);
+    Set<User> findByFollowing_Id(Integer userId);
 }

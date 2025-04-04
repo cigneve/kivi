@@ -3,6 +3,7 @@ package com.traveller.kivi.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -69,15 +70,16 @@ public class UserController {
      * @param userId id of the User
      * @return List of the followers
      */
-    @GetMapping("/users/{userId}/followers")
-    public ResponseEntity<List<User>> getUserFollowers(@PathVariable Integer userId) {
+    @GetMapping("/{userId}/followers")
+    public ResponseEntity<Set<User>> getUserFollowers(@PathVariable Integer userId) {
+
         // First check if the user exists
-        if (!userService.existsById(userId)) {
+        if (!userService.userExistsById(userId)) {
             return ResponseEntity.notFound().build();
         }
 
         // Find all users who follow the specified user
-        List<User> followers = userService.getFollowersOfUser(userId);
+        Set<User> followers = userService.getFollowersOfUser(userId);
         return ResponseEntity.ok(followers);
     }
 }
