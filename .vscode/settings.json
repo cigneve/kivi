@@ -4,7 +4,8 @@
         "User",
         "README",
         "flake",
-        "spring"
+        "spring",
+        "Event"
     ],
     "maven.view": "hierarchical",
     "java.format.settings.url": "eclipse-formatter.xml"
