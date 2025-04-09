@@ -3,13 +3,13 @@ package com.traveller.kivi.model.events;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table
 public class EventLocation {
-
     @NotNull
     private Coordinate location;
 
