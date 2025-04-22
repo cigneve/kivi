@@ -50,6 +50,9 @@ public class Event {
     @OneToMany
     private List<EventLocation> locations;
 
+    @NotNull
+    @NotEmpty
+    private String details;
     public Event() {
         this.created = LocalDate.now();
     }
