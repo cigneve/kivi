@@ -48,7 +48,6 @@ public class User {
     @NotNull
     private UserType userType;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate registrationDate;
 
     private User() {

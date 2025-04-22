@@ -35,13 +35,11 @@ public class Event {
     private EventType eventType;
 
     @Column(nullable = false)
-    @JsonFormat(pattern = "yyyy-MM-dd")
+
     private LocalDate created;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
     @OneToMany
