@@ -7,6 +7,7 @@ import com.traveller.kivi.model.users.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -16,6 +17,9 @@ public class Post {
 
     @OneToMany
     private Set<User> likers;
+
+    @ManyToOne
+    private Set<PostTag> tags;
 
     @OneToMany(mappedBy = "post")
     private List<PostComment> comments;
