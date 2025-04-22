@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,12 +28,21 @@ public class Event {
         MEETUP
     }
 
+    public enum Status {
+        SCHEDULED,
+        FINISHED,
+        CANCELLED,
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private EventType eventType;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Column(nullable = false)
 
