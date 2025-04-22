@@ -53,6 +53,10 @@ public class Event {
     @NotNull
     @NotEmpty
     private String details;
+
+    @OneToMany
+    private List<EventComment> comments;
+
     public Event() {
         this.created = LocalDate.now();
     }
