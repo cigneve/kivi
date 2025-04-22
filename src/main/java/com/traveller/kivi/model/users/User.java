@@ -6,13 +6,16 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Basic;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
@@ -50,8 +53,21 @@ public class User {
 
     private LocalDate registrationDate;
 
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Byte[] profilePicture;
+
     private User() {
         this.registrationDate = LocalDate.now();
+    }
+
+    public Byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(Byte[] profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     public Integer getId() {
