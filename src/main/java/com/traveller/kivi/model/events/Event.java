@@ -47,8 +47,8 @@ public class Event {
     @OneToMany
     private Set<EventRating> ratings;
 
-    @OneToOne
-    private EventLocation eventLocation;
+    @OneToMany
+    private List<EventLocation> locations;
 
     public Event() {
         this.created = LocalDate.now();
