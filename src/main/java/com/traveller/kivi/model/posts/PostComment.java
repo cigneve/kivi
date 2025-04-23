@@ -20,6 +20,7 @@ public class PostComment {
     private Post post;
 
     @NotNull
+    @ManyToOne
     private User commenter;
 
     public User getCommenter() {

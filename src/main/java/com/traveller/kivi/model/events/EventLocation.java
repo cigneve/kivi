@@ -17,6 +17,7 @@ public class EventLocation {
     private Integer id;
 
     @NotNull
+    @OneToOne
     private Coordinate location;
 
     private String title;
