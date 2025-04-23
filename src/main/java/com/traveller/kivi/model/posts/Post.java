@@ -10,6 +10,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
+/**
+ * Post is a post by an user that is presented in the social media feed.
+ */
 @Entity
 public class Post {
     @Id
@@ -21,6 +24,16 @@ public class Post {
     @ManyToMany
     private Set<PostTag> tags;
 
+    private String body;
+
     @OneToMany(mappedBy = "post")
     private List<PostComment> comments;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getBody() {
+        return body;
+    }
 }
