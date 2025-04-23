@@ -42,6 +42,13 @@ public class User {
     @NotBlank
     private String lastName;
 
+    @NotBlank
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "user_follows", joinColumns = @JoinColumn(name = "follower"), inverseJoinColumns = @JoinColumn(name = "target"))
