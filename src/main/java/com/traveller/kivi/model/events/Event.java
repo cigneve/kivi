@@ -58,6 +58,10 @@ public class Event {
     @OneToMany
     private List<EventLocation> locations;
 
+    public List<EventLocation> getLocations() {
+        return locations;
+    }
+
     @NotNull
     @NotEmpty
     private String details;
