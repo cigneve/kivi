@@ -59,4 +59,9 @@ public class UserService {
     public boolean userExistsById(Integer userId) {
         return userRepository.existsById(userId);
     }
+
+    public Set<User> getProfilePicture(Integer userId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getProfilePicture'");
+    }
 }

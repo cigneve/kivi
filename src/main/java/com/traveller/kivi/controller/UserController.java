@@ -82,4 +82,21 @@ public class UserController {
         Set<User> followers = userService.getFollowersOfUser(userId);
         return ResponseEntity.ok(followers);
     }
+
+    /**
+     * Returns the followers of an User
+     * 
+     * @param userId id of the User
+     * @return List of the followers
+     */
+    @GetMapping("/{userId}/avatar")
+    public ResponseEntity<Set<User>> getUserProfilePhoto(@PathVariable Integer userId) {
+
+        if (!userService.userExistsById(userId)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Set<User> followers = userService.getProfilePicture(userId);
+        return ResponseEntity.ok(followers);
+    }
 }
