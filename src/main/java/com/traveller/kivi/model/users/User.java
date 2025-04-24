@@ -65,6 +65,13 @@ public class User {
     @JsonIgnore
     private Byte[] profilePicture;
 
+    @JsonIgnore
+    private Set<String> languages;
+
+    public Set<String> getLanguages() {
+        return languages;
+    }
+
     private User() {
         this.registrationDate = LocalDate.now();
     }
