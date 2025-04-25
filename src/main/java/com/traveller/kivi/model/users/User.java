@@ -19,6 +19,7 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -42,6 +43,7 @@ public class User {
     @NotBlank
     private String lastName;
 
+    @Email
     @NotBlank
     private String email;
 
