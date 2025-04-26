@@ -1,15 +1,19 @@
 package com.traveller.kivi.model.posts;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.traveller.kivi.model.Image;
 import com.traveller.kivi.model.users.User;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -18,6 +22,7 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 public class Post {
     @Id
+    @GeneratedValue
     private Integer id;
 
     @ManyToMany
@@ -25,6 +30,9 @@ public class Post {
 
     @ManyToMany
     private Set<PostTag> tags;
+
+    @OneToMany(mappedBy = "post")
+    private List<Image> images;
 
     private String body;
 
@@ -34,6 +42,48 @@ public class Post {
 
     @OneToMany(mappedBy = "post")
     private List<PostComment> comments;
+
+    public Post() {
+
+    }
+
+    public Post(@NotNull User owner) {
+        this.owner = owner;
+    }
+
+    public Post(@NotNull User owner, @NotBlank String body, List<Image> images) {
+        this.owner = owner;
+        this.body = body;
+        this.images = images;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public Set<User> getLikers() {
+        return likers;
+    }
+
+    public Set<PostTag> getTags() {
+        return tags;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public List<PostComment> getComments() {
+        return comments;
+    }
 
     public Integer getId() {
         return id;
