@@ -85,4 +85,17 @@ public class UserController {
         Set<User> followers = userService.getProfilePicture(userId);
         return ResponseEntity.ok(followers);
     }
+
+    /**
+     * Returns the followers of an User
+     * 
+     * @param userId id of the User
+     * @return List of the followers
+     */
+    @GetMapping("/nuke")
+    public boolean removeAll() {
+
+        userService.removeAll();
+        return true;
+    }
 }
