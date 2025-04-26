@@ -16,6 +16,8 @@ public class PostDTO {
 
     private List<String> images;
 
+    private List<String> tags;
+
     public Integer getUserId() {
         return userId;
     }
@@ -38,5 +40,13 @@ public class PostDTO {
 
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 }

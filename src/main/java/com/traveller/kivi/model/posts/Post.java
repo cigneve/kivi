@@ -1,6 +1,7 @@
 package com.traveller.kivi.model.posts;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -29,7 +30,7 @@ public class Post {
     private Set<User> likers;
 
     @ManyToMany
-    private Set<PostTag> tags;
+    private Set<PostTag> tags = new HashSet<>();
 
     @OneToMany
     private List<Image> images;
