@@ -31,7 +31,7 @@ public class Post {
     @ManyToMany
     private Set<PostTag> tags;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany
     private List<Image> images;
 
     private String body;
@@ -39,9 +39,6 @@ public class Post {
     @ManyToOne
     @NotNull
     private User owner;
-
-    @OneToMany(mappedBy = "post")
-    private List<PostComment> comments;
 
     public Post() {
 
@@ -79,10 +76,6 @@ public class Post {
 
     public void setOwner(User owner) {
         this.owner = owner;
-    }
-
-    public List<PostComment> getComments() {
-        return comments;
     }
 
     public Integer getId() {
