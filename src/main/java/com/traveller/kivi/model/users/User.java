@@ -74,7 +74,7 @@ public class User {
         return languages;
     }
 
-    private User() {
+    public User() {
         this.registrationDate = LocalDate.now();
     }
 
