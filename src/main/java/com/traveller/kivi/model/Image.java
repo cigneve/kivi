@@ -21,6 +21,13 @@ public class Image {
         this.id = id;
     }
 
+    protected Image() {
+    }
+
+    public void setContentLength(long contentLength) {
+        this.contentLength = contentLength;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
