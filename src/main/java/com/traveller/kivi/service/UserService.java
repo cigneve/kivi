@@ -1,6 +1,5 @@
 package com.traveller.kivi.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -13,12 +12,14 @@ import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.model.users.User.UserType;
 import com.traveller.kivi.repository.UserRepository;
 
+import jakarta.validation.Valid;
+
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User createUser(User user) {
+    public User createUser(@Valid User user) {
         return userRepository.save(user);
     }
 
@@ -61,7 +62,7 @@ public class UserService {
     }
 
     public User getUserById(Integer userId) {
-        return userRepository.getReferenceById(userId);
+        return userRepository.findById(userId).get();
     }
 
     public Set<User> getProfilePicture(Integer userId) {
