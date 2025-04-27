@@ -1,5 +1,6 @@
 package com.traveller.kivi.model.posts;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,11 +37,14 @@ public class Post {
 
     private String body;
 
+    private LocalDate created;
+
     @ManyToOne
     @NotNull
     private User owner;
 
     public Post() {
+        this.created = LocalDate.now();
 
     }
 
@@ -52,6 +56,10 @@ public class Post {
         this.owner = owner;
         this.body = body;
         this.images = images;
+    }
+
+    public LocalDate getCreated() {
+        return created;
     }
 
     public List<Image> getImages() {
