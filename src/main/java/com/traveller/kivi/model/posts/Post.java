@@ -1,6 +1,5 @@
 package com.traveller.kivi.model.posts;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,7 +26,7 @@ public class Post {
     private Integer id;
 
     @ManyToMany
-    private Set<User> likers;
+    private Set<User> likers = new HashSet<>();
 
     @ManyToMany
     private Set<PostTag> tags = new HashSet<>();
