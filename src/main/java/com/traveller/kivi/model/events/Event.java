@@ -91,18 +91,6 @@ public class Event {
         this.id = id;
     }
 
-    public void setEventType(EventType eventType) {
-        this.eventType = eventType;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
     public void setCreated(LocalDate created) {
         this.created = created;
     }
@@ -185,6 +173,18 @@ public class Event {
 
     public LocalDate getEndDate() {
         return endDate;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
 }
