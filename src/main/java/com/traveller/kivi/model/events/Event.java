@@ -92,4 +92,28 @@ public class Event {
         return endDate;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
 }
