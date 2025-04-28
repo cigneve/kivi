@@ -8,7 +8,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -51,19 +50,6 @@ public class UserController {
         return userService.getUsersByUserType(userType, pageable);
     }
 
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
-    }
-
     /**
      * Returns the followers of an User
      * 
@@ -81,5 +67,35 @@ public class UserController {
         // Find all users who follow the specified user
         Set<User> followers = userService.getFollowersOfUser(userId);
         return ResponseEntity.ok(followers);
+    }
+
+    /**
+     * Returns the followers of an User
+     * 
+     * @param userId id of the User
+     * @return List of the followers
+     */
+    @GetMapping("/{userId}/avatar")
+    public ResponseEntity<Set<User>> getUserProfilePhoto(@PathVariable Integer userId) {
+
+        if (!userService.userExistsById(userId)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Set<User> followers = userService.getProfilePicture(userId);
+        return ResponseEntity.ok(followers);
+    }
+
+    /**
+     * Returns the followers of an User
+     * 
+     * @param userId id of the User
+     * @return List of the followers
+     */
+    @GetMapping("/nuke")
+    public boolean removeAll() {
+
+        userService.removeAll();
+        return true;
     }
 }

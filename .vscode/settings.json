@@ -5,7 +5,8 @@
         "README",
         "flake",
         "spring",
-        "Event"
+        "Event",
+        "Post"
     ],
     "maven.view": "hierarchical",
     "java.format.settings.url": "eclipse-formatter.xml"
