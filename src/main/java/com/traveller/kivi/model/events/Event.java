@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -60,6 +61,10 @@ public class Event {
     @ManyToOne
     @NotNull
     private User owner;
+
+    @NotBlank
+    @NotNull
+    private String name;
 
     public List<EventLocation> getLocations() {
         return locations;
