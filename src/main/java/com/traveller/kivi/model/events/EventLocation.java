@@ -12,13 +12,10 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 @Table
 public class EventLocation {
-<<<<<<< HEAD
-=======
     @Id
     @GeneratedValue
     private Integer id;
 
->>>>>>> b49851414f54adc14515e65b2f281bc3e63ecb67
     @NotNull
     @OneToOne
     private Coordinate location;
