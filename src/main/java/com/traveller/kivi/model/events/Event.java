@@ -1,6 +1,8 @@
 package com.traveller.kivi.model.events;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -53,10 +55,10 @@ public class Event {
     private LocalDate endDate;
 
     @OneToMany
-    private Set<EventRating> ratings;
+    private Set<EventRating> ratings = new HashSet<>();
 
     @OneToMany
-    private List<EventLocation> locations;
+    private List<EventLocation> locations = new ArrayList<>();
 
     @ManyToOne
     @NotNull
@@ -75,7 +77,7 @@ public class Event {
     private String details;
 
     @OneToMany
-    private List<EventComment> comments;
+    private List<EventComment> comments = new ArrayList<>();
 
     public Event() {
         this.created = LocalDate.now();

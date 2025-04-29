@@ -1,5 +1,6 @@
 package com.traveller.kivi.model.events;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -27,7 +29,7 @@ public class EventLocation {
 
     private String description;
 
-    private Set<String> keywords;
+    private Set<String> keywords = new HashSet<>();
 
     @JsonIgnore
     private boolean featured;
