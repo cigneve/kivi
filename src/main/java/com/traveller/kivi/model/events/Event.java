@@ -15,6 +15,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -59,6 +60,9 @@ public class Event {
 
     @OneToMany
     private List<EventLocation> locations = new ArrayList<>();
+
+    @ManyToMany
+    private List<User> attendants = new ArrayList<>();
 
     @ManyToOne
     @NotNull
