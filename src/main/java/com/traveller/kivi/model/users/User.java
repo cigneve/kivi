@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.traveller.kivi.model.Image;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Entity;
@@ -62,10 +63,10 @@ public class User {
 
     private LocalDate registrationDate;
 
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
     @JsonIgnore
-    private Byte[] profilePicture;
+    @ManyToOne
+    @NotNull
+    private Image profilePicture;
 
     @JsonIgnore
     private Set<String> languages;
@@ -78,11 +79,11 @@ public class User {
         this.registrationDate = LocalDate.now();
     }
 
-    public Byte[] getProfilePicture() {
+    public Image getProfilePicture() {
         return profilePicture;
     }
 
-    public void setProfilePicture(Byte[] profilePicture) {
+    public void setProfilePicture(Image profilePicture) {
         this.profilePicture = profilePicture;
     }
 
