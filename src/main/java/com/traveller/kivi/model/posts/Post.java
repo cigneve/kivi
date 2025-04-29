@@ -37,15 +37,13 @@ public class Post {
 
     private String body;
 
-    private LocalDate created;
+    private LocalDate created = LocalDate.now();
 
     @ManyToOne
     @NotNull
     private User owner;
 
     public Post() {
-        this.created = LocalDate.now();
-
     }
 
     public Post(@NotNull User owner) {
