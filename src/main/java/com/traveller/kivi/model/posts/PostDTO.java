@@ -1,5 +1,6 @@
 package com.traveller.kivi.model.posts;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
@@ -14,9 +15,9 @@ public class PostDTO {
     @NotBlank
     private String body;
 
-    private List<String> images;
+    private List<String> images = new ArrayList<>();
 
-    private List<String> tags;
+    private List<String> tags = new ArrayList<>();
 
     public Integer getUserId() {
         return userId;
