@@ -1,6 +1,8 @@
 package com.traveller.kivi.model.events;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,9 +15,11 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -52,14 +56,21 @@ public class Event {
     private LocalDate endDate;
 
     @OneToMany
-    private Set<EventRating> ratings;
+    private Set<EventRating> ratings = new HashSet<>();
 
     @OneToMany
-    private List<EventLocation> locations;
+    private List<EventLocation> locations = new ArrayList<>();
+
+    @ManyToMany
+    private List<User> attendants = new ArrayList<>();
 
     @ManyToOne
     @NotNull
     private User owner;
+
+    @NotBlank
+    @NotNull
+    private String name;
 
     public List<EventLocation> getLocations() {
         return locations;
@@ -70,7 +81,7 @@ public class Event {
     private String details;
 
     @OneToMany
-    private List<EventComment> comments;
+    private List<EventComment> comments = new ArrayList<>();
 
     public Event() {
         this.created = LocalDate.now();

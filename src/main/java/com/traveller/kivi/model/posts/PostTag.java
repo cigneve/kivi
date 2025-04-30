@@ -18,6 +18,13 @@ public class PostTag {
     @Column(unique = true)
     private String name;
 
+    public PostTag() {
+    }
+
+    public PostTag(String name) {
+        this.name = name;
+    }
+
     // Getters and setters
     public Integer getId() {
         return id;

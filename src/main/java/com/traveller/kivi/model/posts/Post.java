@@ -1,6 +1,8 @@
 package com.traveller.kivi.model.posts;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,25 +28,23 @@ public class Post {
     private Integer id;
 
     @ManyToMany
-    private Set<User> likers;
+    private Set<User> likers = new HashSet<>();
 
     @ManyToMany
-    private Set<PostTag> tags;
+    private Set<PostTag> tags = new HashSet<>();
 
-    @OneToMany(mappedBy = "post")
-    private List<Image> images;
+    @OneToMany
+    private List<Image> images = new ArrayList<>();
 
     private String body;
+
+    private LocalDate created = LocalDate.now();
 
     @ManyToOne
     @NotNull
     private User owner;
 
-    @OneToMany(mappedBy = "post")
-    private List<PostComment> comments;
-
     public Post() {
-
     }
 
     public Post(@NotNull User owner) {
@@ -55,6 +55,10 @@ public class Post {
         this.owner = owner;
         this.body = body;
         this.images = images;
+    }
+
+    public LocalDate getCreated() {
+        return created;
     }
 
     public List<Image> getImages() {
@@ -79,10 +83,6 @@ public class Post {
 
     public void setOwner(User owner) {
         this.owner = owner;
-    }
-
-    public List<PostComment> getComments() {
-        return comments;
     }
 
     public Integer getId() {

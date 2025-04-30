@@ -1,5 +1,7 @@
 package com.traveller.kivi.model.events;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -31,10 +33,10 @@ public class EventSkeleton {
     private EventType eventType;
 
     @OneToMany
-    private Set<EventRating> templateRatings;
+    private Set<EventRating> templateRatings = new HashSet<>();
 
     @OneToMany
-    private List<EventLocation> locations;
+    private List<EventLocation> locations = new ArrayList<>();
 
     public List<EventLocation> getLocations() {
         return locations;
@@ -45,7 +47,7 @@ public class EventSkeleton {
     private String details;
 
     @OneToMany
-    private List<EventComment> comments;
+    private List<EventComment> comments = new ArrayList<>();
 
     public EventSkeleton() {
     }

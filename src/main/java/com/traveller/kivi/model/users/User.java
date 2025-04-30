@@ -1,23 +1,22 @@
 package com.traveller.kivi.model.users;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.traveller.kivi.model.Image;
 
-import jakarta.persistence.Basic;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.Lob;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -62,27 +61,27 @@ public class User {
 
     private LocalDate registrationDate;
 
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
     @JsonIgnore
-    private Byte[] profilePicture;
+    @ManyToOne
+    @NotNull
+    private Image profilePicture;
 
     @JsonIgnore
-    private Set<String> languages;
+    private Set<String> languages = new HashSet<>();
 
     public Set<String> getLanguages() {
         return languages;
     }
 
-    private User() {
+    public User() {
         this.registrationDate = LocalDate.now();
     }
 
-    public Byte[] getProfilePicture() {
+    public Image getProfilePicture() {
         return profilePicture;
     }
 
-    public void setProfilePicture(Byte[] profilePicture) {
+    public void setProfilePicture(Image profilePicture) {
         this.profilePicture = profilePicture;
     }
 

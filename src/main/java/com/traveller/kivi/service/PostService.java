@@ -1,6 +1,7 @@
 package com.traveller.kivi.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,10 @@ import com.traveller.exception.UserNotFoundException;
 import com.traveller.kivi.model.Image;
 import com.traveller.kivi.model.posts.Post;
 import com.traveller.kivi.model.posts.PostDTO;
+import com.traveller.kivi.model.posts.PostTag;
 import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.repository.PostRepository;
+import com.traveller.kivi.repository.PostTagRepository;
 
 @Service
 public class PostService {
@@ -25,6 +28,9 @@ public class PostService {
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private PostTagRepository postTagRepository;
 
     public Post createPost(Post post) {
         return postRepository.save(post);
@@ -56,6 +62,32 @@ public class PostService {
             constructPost.getImages().add(imageObj);
         }
         constructPost.setBody(postDTO.getBody());
+        // Handle tags
+        if (postDTO.getTags() != null) {
+            postDTO.getTags().forEach(tagName -> {
+                PostTag tag = postTagRepository.findByName(tagName)
+                        .orElseGet(() -> postTagRepository.save(new PostTag(tagName)));
+                constructPost.getTags().add(tag);
+            });
+        }
         return postRepository.save(constructPost);
+    }
+
+    /**
+     * Updates the tags of an existing post.
+     * 
+     * @param postId
+     * @param tags
+     * @return updated post
+     */
+    public Post updatePostTags(Integer postId, List<String> tags) {
+        Post post = getPost(postId);
+        post.getTags().clear();
+        tags.forEach(tagName -> {
+            PostTag tag = postTagRepository.findByName(tagName)
+                    .orElseGet(() -> postTagRepository.save(new PostTag(tagName)));
+            post.getTags().add(tag);
+        });
+        return postRepository.save(post);
     }
 }
