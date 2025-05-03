@@ -39,8 +39,8 @@ public class PostController {
         return ResponseEntity.ok(createdPost);
     }
 
-    @GetMapping("/feed")
-    public PagedModel<Post> getPaginatedPosts(Pageable pageable) {
-        return new PagedModel<>(postService.getPaginatedPosts(pageable));
+    @GetMapping("/feed/{userId}")
+    public PagedModel<Post> getPaginatedPosts(Pageable pageable, @PathVariable Integer userId) {
+        return new PagedModel<>(postService.getPostsOfOthers(pageable, userId));
     }
 }

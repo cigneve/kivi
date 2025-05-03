@@ -40,8 +40,9 @@ public class PostService {
         return postRepository.findById(postId).get();
     }
 
-    public Page<Post> getPaginatedPosts(Pageable pageable) {
-        return postRepository.findAll(pageable);
+    public Page<Post> getPostsOfOthers(Pageable pageable, Integer userId) {
+        User user = userService.getUserById(userId);
+        return postRepository.findByOwnerNot(pageable, user);
     }
 
     public List<Post> getPostsOfUser(Integer userId) {
