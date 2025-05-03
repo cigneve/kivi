@@ -1,68 +1,79 @@
 package com.traveller.kivi.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.traveller.kivi.model.events.Event;
+import com.traveller.kivi.repository.EventRepository;
 
 @Service
-@Transactional
 public class EventService {
 
-    @PersistenceContext
-    private EntityManager em;
+    private final EventRepository eventRepository;
 
-    /**
-     * Creates new event.
-     */
-    public Event createEvent(Event event) {
-        em.persist(event);
-        return event;
+    @Autowired
+    public EventService(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
     }
 
     /**
-     * Brings Event according to Id. If not found throws IllegalArgumentException.
-     */
-    public Event getEventById(Integer eventId) {
-        Event event = em.find(Event.class, eventId);
-        if (event == null) {
-            throw new IllegalArgumentException("Event not found: " + eventId);
-        }
-        return event;
-    }
-
-    /**
-     * Lists all events. 
+     * Retrieves all events.
      */
     public List<Event> getAllEvents() {
-        return em
-            .createQuery("SELECT e FROM Event e", Event.class)
-            .getResultList();
+        return eventRepository.findAll();
     }
 
     /**
-     * Updates the Event with the specified Id.
+     * Retrieves a paginated list of events.
+     */
+    public Page<Event> getPaginatedEvents(Pageable pageable) {
+        return eventRepository.findAll(pageable);
+    }
+
+    /**
+     * Checks if an event exists by its ID.
+     */
+    public boolean eventExistsById(Integer eventId) {
+        return eventRepository.existsById(eventId);
+    }
+
+    /**
+     * Retrieves an event by its ID.
+     */
+    public Event getEventById(Integer eventId) {
+        return eventRepository.findById(eventId).orElseThrow(() -> new NoSuchElementException("Event not found: " + eventId));
+    }
+
+    /**
+     * Creates a new event.
+     */
+    public Event createEvent(Event event) {
+        return eventRepository.save(event);
+    }
+
+    /**
+     * Updates an existing event.
      */
     public Event updateEvent(Integer eventId, Event updated) {
         Event existing = getEventById(eventId);
+        existing.setName(updated.getName());
+        existing.setDetails(updated.getDetails());
         existing.setEventType(updated.getEventType());
         existing.setStatus(updated.getStatus());
         existing.setStartDate(updated.getStartDate());
         existing.setEndDate(updated.getEndDate());
-        em.merge(existing);
-        return existing;
+        return eventRepository.save(existing);
     }
 
     /**
-     * Deletes Id according to the Id.
+     * Deletes an event by its ID.
      */
     public void deleteEvent(Integer eventId) {
-        Event e = getEventById(eventId);
-        em.remove(e);
+        eventRepository.deleteById(eventId);
     }
 }
