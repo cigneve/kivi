@@ -72,10 +72,6 @@ public class Event {
     @NotNull
     private String name;
 
-    public List<EventLocation> getLocations() {
-        return locations;
-    }
-
     @NotNull
     @NotEmpty
     private String details;
@@ -85,6 +81,94 @@ public class Event {
 
     public Event() {
         this.created = LocalDate.now();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public void setCreated(LocalDate created) {
+        this.created = created;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public Set<EventRating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Set<EventRating> ratings) {
+        this.ratings = ratings;
+    }
+
+    public void setLocations(List<EventLocation> locations) {
+        this.locations = locations;
+    }
+
+    public List<User> getAttendants() {
+        return attendants;
+    }
+
+    public void setAttendants(List<User> attendants) {
+        this.attendants = attendants;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<EventLocation> getLocations() {
+        return locations;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public List<EventComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<EventComment> comments) {
+        this.comments = comments;
     }
 
     public EventType getEventType() {

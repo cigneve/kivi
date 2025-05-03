@@ -34,6 +34,34 @@ public class EventLocation {
     @JsonIgnore
     private boolean featured;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Coordinate getLocation() {
+        return location;
+    }
+
+    public void setLocation(Coordinate location) {
+        this.location = location;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setFeatured(boolean featured) {
+        this.featured = featured;
+    }
+
     public Set<String> getKeywords() {
         return keywords;
     }
