@@ -63,7 +63,6 @@ public class User {
 
     @JsonIgnore
     @ManyToOne
-    @NotNull
     private Image profilePicture;
 
     @JsonIgnore
