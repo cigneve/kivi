@@ -140,4 +140,9 @@ public class Event {
         this.name= (String)name2;
     }
 
+    public User getOwner() {
+        
+        return this.owner;
+    }
+
 }
