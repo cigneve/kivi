@@ -127,4 +127,17 @@ public class Event {
         this.details = details;
     }
 
+    public Object getName() {
+    
+        return this.name;
+    }
+
+    public String getDetails() {
+        return this.details;
+    }
+
+    public void setName(Object name2) {
+        this.name= (String)name2;
+    }
+
 }
