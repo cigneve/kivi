@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.traveller.exception.UserNotFoundException;
 import com.traveller.kivi.model.Image;
 import com.traveller.kivi.model.posts.Post;
-import com.traveller.kivi.model.posts.PostDTO;
+import com.traveller.kivi.model.posts.PostCreateDTO;
 import com.traveller.kivi.model.posts.PostTag;
 import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.repository.PostRepository;
@@ -56,7 +56,7 @@ public class PostService {
      * @param postDTO
      * @return created post
      */
-    public Post createPostFromDTO(PostDTO postDTO) {
+    public Post createPostFromDTO(PostCreateDTO postDTO) {
         if (!userService.userExistsById(postDTO.getUserId())) {
             throw new UserNotFoundException("User with ID " + postDTO.getUserId() + " not found");
         }

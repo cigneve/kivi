@@ -6,7 +6,7 @@ import java.util.List;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class PostDTO {
+public class PostCreateDTO {
 
     // TODO: will remove when we migrate to spring security
     @NotNull
