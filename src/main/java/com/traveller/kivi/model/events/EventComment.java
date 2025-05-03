@@ -12,6 +12,10 @@ import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+/**
+ * EventComments are shown in the Chat page.
+ * TODO: confusing name
+ */
 @Entity
 public class EventComment {
     @Id
