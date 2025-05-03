@@ -3,6 +3,7 @@ package com.traveller.kivi.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import com.traveller.exception.UserNotFoundException;
 import com.traveller.kivi.model.Image;
 import com.traveller.kivi.model.posts.Post;
 import com.traveller.kivi.model.posts.PostCreateDTO;
+import com.traveller.kivi.model.posts.PostDetail;
 import com.traveller.kivi.model.posts.PostTag;
 import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.repository.PostRepository;
@@ -36,18 +38,37 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public Post getPost(Integer postId) {
+    public PostDetail getPostDetail(Integer postId) {
+        return PostDetail.toPostDetail(postRepository.findById(postId).get());
+    }
+
+    /**
+     * Returns a post with the Id.
+     * Use {@literal PostDetail} for exposed api.
+     * 
+     * @param postId
+     * @return
+     */
+    private Post getPost(Integer postId) {
         return postRepository.findById(postId).get();
     }
 
-    public Page<Post> getPostsOfOthers(Pageable pageable, Integer userId) {
+    /**
+     * Returns the posts of users excluding the userId.
+     * Used as a feed implementation
+     * 
+     * @param pageable
+     * @param userId
+     * @return
+     */
+    public Page<PostDetail> getPostsOfOthers(Pageable pageable, Integer userId) {
         User user = userService.getUserById(userId);
-        return postRepository.findByOwnerNot(pageable, user);
+        return postRepository.findByOwnerNot(pageable, user).map(PostDetail::toPostDetail);
     }
 
-    public List<Post> getPostsOfUser(Integer userId) {
+    public List<PostDetail> getPostsOfUser(Integer userId) {
         User user = userService.getUserById(userId);
-        return postRepository.findByOwner(user);
+        return postRepository.findByOwner(user).stream().map(PostDetail::toPostDetail).collect(Collectors.toList());
     }
 
     /**

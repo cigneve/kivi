@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.traveller.kivi.model.posts.Post;
 import com.traveller.kivi.model.posts.PostCreateDTO;
+import com.traveller.kivi.model.posts.PostDetail;
 import com.traveller.kivi.service.PostService;
 
 import jakarta.validation.Valid;
@@ -34,13 +35,13 @@ public class PostController {
     }
 
     @GetMapping("/get/{postId}")
-    public ResponseEntity<Post> getPost(@PathVariable Integer postId) {
-        Post createdPost = postService.getPost(postId);
+    public ResponseEntity<PostDetail> getPost(@PathVariable Integer postId) {
+        PostDetail createdPost = postService.getPostDetail(postId);
         return ResponseEntity.ok(createdPost);
     }
 
     @GetMapping("/feed/{userId}")
-    public PagedModel<Post> getPaginatedPosts(Pageable pageable, @PathVariable Integer userId) {
+    public PagedModel<PostDetail> getPaginatedPosts(Pageable pageable, @PathVariable Integer userId) {
         return new PagedModel<>(postService.getPostsOfOthers(pageable, userId));
     }
 }
