@@ -44,6 +44,11 @@ public class PostService {
         return postRepository.findAll(pageable);
     }
 
+    public List<Post> getPostsOfUser(Integer userId) {
+        User user = userService.getUserById(userId);
+        return postRepository.findByOwner(user);
+    }
+
     /**
      * Maps a PostDTO to a Post and adds it to the repository.
      * 
