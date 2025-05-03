@@ -11,10 +11,24 @@ import org.springframework.stereotype.Service;
 import com.traveller.kivi.model.events.Event;
 import com.traveller.kivi.repository.EventRepository;
 
+import com.traveller.kivi.service.AchievementService;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
+import com.traveller.kivi.model.achievements.CriterionType;
+
 @Service
 public class EventService {
 
+    @Autowired
     private final EventRepository eventRepository;
+
+    @PersistenceContext
+    private EntityManager em;
+
+    @Autowired
+    private AchievementService achievementService;
 
     @Autowired
     public EventService(EventRepository eventRepository) {
@@ -53,7 +67,14 @@ public class EventService {
      * Creates a new event.
      */
     public Event createEvent(Event event) {
-        return eventRepository.save(event);
+        em.persist(event);
+        int totalCreates = eventRepository.countByOwner_Id(event.getOwner().getId());
+        achievementService.checkAndAward(
+            event.getOwner().getId(),
+            CriterionType.EVENT_CREATE.name(),
+            totalCreates
+        );
+        return event;
     }
 
     /**

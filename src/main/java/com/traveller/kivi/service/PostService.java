@@ -20,6 +20,9 @@ import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.repository.PostRepository;
 import com.traveller.kivi.repository.PostTagRepository;
 
+import com.traveller.kivi.service.AchievementService;
+import com.traveller.kivi.model.achievements.CriterionType;
+
 @Service
 public class PostService {
     @Autowired
@@ -34,8 +37,19 @@ public class PostService {
     @Autowired
     private PostTagRepository postTagRepository;
 
+    @Autowired
+    private AchievementService achievementService;
+
     public Post createPost(Post post) {
-        return postRepository.save(post);
+        Post saved = postRepository.save(post);
+        int totalPosts = postRepository.countByOwner_Id(post.getOwner().getId());
+        achievementService.checkAndAward(
+            post.getOwner().getId(),
+            CriterionType.POST_CREATE.name(),
+            totalPosts
+        );
+    
+        return saved;
     }
 
     public PostDetail getPostDetail(Integer postId) {
