@@ -16,4 +16,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     Page<Post> findByOwnerNot(Pageable pageable, User user);
 
     List<Post> findByOwner(User user);
+
+    int countByOwner_Id(Integer ownerId);
 }
