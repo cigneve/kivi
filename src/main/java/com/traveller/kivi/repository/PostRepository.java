@@ -7,4 +7,6 @@ import com.traveller.kivi.model.posts.Post;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
+
+    int countByOwner_Id(Integer ownerId);
 }
