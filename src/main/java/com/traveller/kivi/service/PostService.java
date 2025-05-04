@@ -78,9 +78,6 @@ public class PostService {
      * @return created post
      */
     public Post createPostFromDTO(PostCreateDTO postDTO) {
-        if (!userService.userExistsById(postDTO.getUserId())) {
-            throw new UserNotFoundException("User with ID " + postDTO.getUserId() + " not found");
-        }
         User owner = userService.getUserById(postDTO.getUserId());
         Post constructPost = new Post(owner, postDTO.getBody(), new ArrayList<>());
         for (String image : postDTO.getImages()) {

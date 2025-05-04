@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.traveller.exception.UserNotFoundException;
 import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.model.users.User.UserType;
 import com.traveller.kivi.repository.UserRepository;
@@ -62,7 +63,11 @@ public class UserService {
     }
 
     public User getUserById(Integer userId) {
-        return userRepository.findById(userId).get();
+        try {
+            return userRepository.findById(userId).get();
+        } catch (Exception e) {
+            throw new UserNotFoundException("User with ID " + userId + " not found");
+        }
     }
 
     public Set<User> getProfilePicture(Integer userId) {
