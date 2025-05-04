@@ -44,11 +44,10 @@ public class PostService {
         Post saved = postRepository.save(post);
         int totalPosts = postRepository.countByOwner_Id(post.getOwner().getId());
         achievementService.checkAndAward(
-            post.getOwner().getId(),
-            CriterionType.POST_CREATE.name(),
-            totalPosts
-        );
-    
+                post.getOwner().getId(),
+                CriterionType.POST_CREATE.name(),
+                totalPosts);
+
         return saved;
     }
 
@@ -122,7 +121,7 @@ public class PostService {
      * @param tags
      * @return updated post
      */
-    public Post updatePostTags(Integer postId, List<String> tags) {
+    public PostDetail updatePostTags(Integer postId, List<String> tags) {
         Post post = getPostById(postId);
         post.getTags().clear();
         tags.forEach(tagName -> {
@@ -130,6 +129,6 @@ public class PostService {
                     .orElseGet(() -> postTagRepository.save(new PostTag(tagName)));
             post.getTags().add(tag);
         });
-        return postRepository.save(post);
+        return PostDetail.toPostDetail(postRepository.save(post));
     }
 }

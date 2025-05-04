@@ -1,5 +1,7 @@
 package com.traveller.kivi.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
@@ -43,5 +45,15 @@ public class PostController {
     @GetMapping("/feed/{userId}")
     public PagedModel<PostDetail> getPaginatedPosts(Pageable pageable, @PathVariable Integer userId) {
         return new PagedModel<>(postService.getPostsOfOthers(pageable, userId));
+    }
+
+    @GetMapping("/{userId}")
+    public List<PostDetail> getPaginatedPostsOfUser(@PathVariable Integer userId) {
+        return postService.getPostsOfUser(userId);
+    }
+
+    @PostMapping("/updatetags/{postId}")
+    public PostDetail updatePostTags(@PathVariable Integer postId, @RequestBody List<String> tags) {
+        return postService.updatePostTags(postId, tags);
     }
 }
