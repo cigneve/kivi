@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.traveller.exception.UserNotFoundException;
+import com.traveller.exception.PostNotFoundException;
 import com.traveller.kivi.model.Image;
 import com.traveller.kivi.model.posts.Post;
 import com.traveller.kivi.model.posts.PostCreateDTO;
@@ -39,7 +39,7 @@ public class PostService {
     }
 
     public PostDetail getPostDetail(Integer postId) {
-        return PostDetail.toPostDetail(postRepository.findById(postId).get());
+        return PostDetail.toPostDetail(getPostById(postId));
     }
 
     /**
@@ -49,8 +49,12 @@ public class PostService {
      * @param postId
      * @return
      */
-    private Post getPost(Integer postId) {
-        return postRepository.findById(postId).get();
+    public Post getPostById(Integer postId) {
+        try {
+            return postRepository.findById(postId).get();
+        } catch (Exception e) {
+            throw new PostNotFoundException(postId);
+        }
     }
 
     /**
@@ -105,7 +109,7 @@ public class PostService {
      * @return updated post
      */
     public Post updatePostTags(Integer postId, List<String> tags) {
-        Post post = getPost(postId);
+        Post post = getPostById(postId);
         post.getTags().clear();
         tags.forEach(tagName -> {
             PostTag tag = postTagRepository.findByName(tagName)
