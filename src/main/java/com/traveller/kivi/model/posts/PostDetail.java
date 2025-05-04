@@ -17,7 +17,6 @@ public class PostDetail {
     private List<String> imageIds = new ArrayList<>(); // List of image URLs associated with the post
     private List<Integer> tagIds = new ArrayList<>(); // List of tags associated with the post
     private String createdAt; // Timestamp for when the post was created
-    private String updatedAt; // Timestamp for when the post was last updated
 
     public Integer getPostId() {
         return postId;
@@ -65,14 +64,6 @@ public class PostDetail {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public static PostDetail toPostDetail(Post post) {
