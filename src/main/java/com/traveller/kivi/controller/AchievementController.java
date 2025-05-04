@@ -15,7 +15,7 @@ public class AchievementController {
     private AchievementService achievementService;
 
     /**
-     * Kullanıcının kazandığı rozetleri döner.
+     * Returns the badges the user earned. 
      */
     @GetMapping("/users/{userId}")
     public List<UserAchievement> getUserAchievements(@PathVariable Integer userId) {
