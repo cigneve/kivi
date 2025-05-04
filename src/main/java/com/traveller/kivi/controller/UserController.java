@@ -1,27 +1,21 @@
 package com.traveller.kivi.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.traveller.kivi.model.users.User;
+import com.traveller.kivi.model.users.UserDetail;
 import com.traveller.kivi.service.UserService;
 
 import jakarta.validation.Valid;
@@ -40,12 +34,12 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserDetail> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @GetMapping("/type/{userType}")
-    public Page<User> getUsersByType(@Valid @PathVariable User.UserType userType,
+    public Page<UserDetail> getUsersByType(@Valid @PathVariable User.UserType userType,
             Pageable pageable) {
         return userService.getUsersByUserType(userType, pageable);
     }
@@ -57,7 +51,7 @@ public class UserController {
      * @return List of the followers
      */
     @GetMapping("/{userId}/followers")
-    public ResponseEntity<Set<User>> getUserFollowers(@PathVariable Integer userId) {
+    public ResponseEntity<Set<UserDetail>> getUserFollowers(@PathVariable Integer userId) {
 
         // First check if the user exists
         if (!userService.userExistsById(userId)) {
@@ -65,7 +59,7 @@ public class UserController {
         }
 
         // Find all users who follow the specified user
-        Set<User> followers = userService.getFollowersOfUser(userId);
+        Set<UserDetail> followers = userService.getFollowersOfUser(userId);
         return ResponseEntity.ok(followers);
     }
 
@@ -76,14 +70,9 @@ public class UserController {
      * @return List of the followers
      */
     @GetMapping("/{userId}/avatar")
-    public ResponseEntity<Set<User>> getUserProfilePhoto(@PathVariable Integer userId) {
+    public ResponseEntity<Integer> getUserProfilePhoto(@PathVariable Integer userId) {
 
-        if (!userService.userExistsById(userId)) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Set<User> followers = userService.getProfilePicture(userId);
-        return ResponseEntity.ok(followers);
+        throw new UnsupportedOperationException();
     }
 
     /**
