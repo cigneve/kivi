@@ -1,22 +1,17 @@
 package com.traveller.kivi.service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.traveller.kivi.model.events.Event;
-import com.traveller.kivi.repository.EventRepository;
-
-import com.traveller.kivi.service.AchievementService;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-
+import com.traveller.exception.EventNotFoundException;
 import com.traveller.kivi.model.achievements.CriterionType;
+import com.traveller.kivi.model.events.Event;
+import com.traveller.kivi.model.events.dto.EventDetails;
+import com.traveller.kivi.repository.EventRepository;
 
 @Service
 public class EventService {
@@ -24,13 +19,9 @@ public class EventService {
     @Autowired
     private final EventRepository eventRepository;
 
-    @PersistenceContext
-    private EntityManager em;
-
     @Autowired
     private AchievementService achievementService;
 
-    @Autowired
     public EventService(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
     }
@@ -60,7 +51,7 @@ public class EventService {
      * Retrieves an event by its ID.
      */
     public Event getEventById(Integer eventId) {
-        return eventRepository.findById(eventId).orElseThrow(() -> new NoSuchElementException("Event not found: " + eventId));
+		return eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
     }
 
     /**
