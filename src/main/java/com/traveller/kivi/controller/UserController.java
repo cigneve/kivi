@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -70,9 +71,9 @@ public class UserController {
      * @return List of the followers
      */
     @GetMapping("/{userId}/avatar")
-    public ResponseEntity<Integer> getUserProfilePhoto(@PathVariable Integer userId) {
+    public InputStreamResource getUserProfilePhoto(@PathVariable Integer userId) {
 
-        throw new UnsupportedOperationException();
+        return userService.getProfilePicture(userId);
     }
 
     /**

@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 
@@ -33,13 +32,12 @@ public class ImageService {
         return imageRepository.findById(id).get();
     }
 
-    public InputStream getImageContent(String id) {
-        Image image = getImageById(id);
+    public InputStream getImageContent(Image image) {
         return imageStore.getContent(image);
     }
 
-    public InputStreamResource getImageContentAsResource(String id) {
-        return new InputStreamResource(getImageContent(id));
+    public InputStreamResource getImageContentAsResource(Image image) {
+        return new InputStreamResource(getImageContent(image));
     }
 
     public Image createImage(String id, String stream) {

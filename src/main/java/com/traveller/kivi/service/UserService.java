@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ import jakarta.validation.Valid;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ImageService imageService;
 
     public User createUser(@Valid User user) {
         return userRepository.save(user);
@@ -74,9 +78,9 @@ public class UserService {
         }
     }
 
-    public Set<User> getProfilePicture(Integer userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getProfilePicture'");
+    public InputStreamResource getProfilePicture(Integer userId) {
+        User user = getUserById(userId);
+        return imageService.getImageContentAsResource(user.getProfilePicture());
     }
 
     public void removeAll() {
