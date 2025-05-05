@@ -131,4 +131,27 @@ public class PostService {
         });
         return PostDetail.toPostDetail(postRepository.save(post));
     }
+
+    public PostDetail likePost(Integer postId, Integer userId) {
+        User user = userService.getUserById(userId);
+        Post post = getPostById(postId);
+
+        // Check if the user has already liked the post
+        if (!post.getLikers().contains(user)) {
+            post.getLikers().add(user);
+        }
+        return PostDetail.toPostDetail(post);
+    }
+
+    public PostDetail unlikePost(Integer postId, Integer userId) {
+        User user = userService.getUserById(userId);
+        Post post = getPostById(postId);
+
+        // Check if the user has already liked the post
+        if (post.getLikers().contains(user)) {
+            post.getLikers().remove(user);
+        }
+
+        return PostDetail.toPostDetail(post);
+    }
 }
