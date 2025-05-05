@@ -104,7 +104,13 @@ public class PostService {
      * @param postDTO
      * @return created post
      */
-    public Post createPostFromDTO(PostCreateDTO postDTO) {
+    public PostDetail createPostFromDTO(PostCreateDTO postDTO) {
+        Post constructPost = mapDTO(postDTO);
+
+        return PostDetail.toPostDetail(createPost(constructPost));
+    }
+
+    private Post mapDTO(PostCreateDTO postDTO) {
         User owner = userService.getUserById(postDTO.getUserId());
         Post constructPost = new Post(owner, postDTO.getBody(), new ArrayList<>());
         for (String image : postDTO.getImages()) {
@@ -121,7 +127,7 @@ public class PostService {
                 constructPost.getTags().add(tag);
             });
         }
-        return postRepository.save(constructPost);
+        return constructPost;
     }
 
     /**
