@@ -20,6 +20,7 @@ import com.traveller.kivi.model.users.UserDetail;
 import com.traveller.kivi.service.UserService;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/users")
@@ -74,6 +75,11 @@ public class UserController {
     public InputStreamResource getUserProfilePhoto(@PathVariable Integer userId) {
 
         return userService.getProfilePicture(userId);
+    }
+
+    @PostMapping("/{userId}/follow")
+    public UserDetail followUser(@PathVariable Integer userId, @RequestParam Integer targetUserId) {
+        return userService.followUser(userId, targetUserId);
     }
 
     /**

@@ -55,15 +55,14 @@ public class UserService {
      * @param targetUserId Id of user that is followed
      * @return if the operation was succesful
      */
-    public boolean followUser(Integer followerId, Integer targetUserId) {
+    public UserDetail followUser(Integer followerId, Integer targetUserId) {
         User follower = userRepository.findById(followerId).orElseThrow();
         User target = userRepository.findById(targetUserId).orElseThrow();
         Set<User> following = follower.getFollowing();
-        if (following.contains(target)) {
-            return false;
+        if (!following.contains(target)) {
+            following.add(target);
         }
-        following.add(target);
-        return true;
+        return UserDetail.fromUser(target);
     }
 
     public boolean userExistsById(Integer userId) {
