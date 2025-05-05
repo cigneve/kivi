@@ -29,15 +29,15 @@ public class EventService {
     /**
      * Retrieves all events.
      */
-    public List<Event> getAllEvents() {
-        return eventRepository.findAll();
+    public List<EventDetails> getAllEvents() {
+        return eventRepository.findAll().stream().map(EventDetails::toEventDetails).toList();
     }
 
     /**
      * Retrieves a paginated list of events.
      */
-    public Page<Event> getPaginatedEvents(Pageable pageable) {
-        return eventRepository.findAll(pageable);
+    public Page<EventDetails> getPaginatedEvents(Pageable pageable) {
+        return eventRepository.findAll(pageable).map(EventDetails::toEventDetails);
     }
 
     /**
@@ -57,20 +57,20 @@ public class EventService {
     /**
      * Creates a new event.
      */
-    public Event createEvent(Event event) {
-        em.persist(event);
-        Long totalCreates = eventRepository.countByOwner_Id(event.getOwner().getId());
+    public EventDetails createEvent(Event event) {
+        eventRepository.save(event);
+        int totalCreates = eventRepository.countByOwner_Id(event.getOwner().getId());
         achievementService.checkAndAward(
                 event.getOwner().getId(),
                 CriterionType.EVENT_CREATE.name(),
                 totalCreates);
-        return event;
+        return EventDetails.toEventDetails(event);
     }
 
     /**
      * Updates an existing event.
      */
-    public Event updateEvent(Integer eventId, Event updated) {
+    public EventDetails updateEvent(Integer eventId, Event updated) {
         Event existing = getEventById(eventId);
         existing.setName(updated.getName());
         existing.setDetails(updated.getDetails());
@@ -78,7 +78,7 @@ public class EventService {
         existing.setStatus(updated.getStatus());
         existing.setStartDate(updated.getStartDate());
         existing.setEndDate(updated.getEndDate());
-        return eventRepository.save(existing);
+        return EventDetails.toEventDetails(eventRepository.save(existing));
     }
 
     /**
