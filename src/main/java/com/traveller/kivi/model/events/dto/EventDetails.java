@@ -163,8 +163,8 @@ public class EventDetails {
         this.details = details;
     }
 
-    public EventDetails toEventDetails(Event event) {
-        EventDetails dto = this;
+    public static EventDetails toEventDetails(Event event) {
+        EventDetails dto = new EventDetails();
         dto.setId(event.getId());
         dto.setEventType(event.getEventType());
         dto.setStatus(event.getStatus());
