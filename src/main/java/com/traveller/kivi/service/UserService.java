@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.traveller.exception.UserNotFoundException;
+import com.traveller.kivi.model.Image;
 import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.model.users.User.UserType;
 import com.traveller.kivi.model.users.UserDetail;
@@ -34,6 +35,11 @@ public class UserService {
     private ImageService imageService;
 
     public User createUser(@Valid User user) {
+        if (user.getProfilePicture() == null) {
+            Image defaultImage = imageService.createImage("default-profile", "default-content");
+            user.setProfilePicture(defaultImage);
+        }
+
         return userRepository.save(user);
     }
 
