@@ -59,7 +59,7 @@ public class EventService {
      */
     public EventDetails createEvent(Event event) {
         eventRepository.save(event);
-        int totalCreates = eventRepository.countByOwner_Id(event.getOwner().getId());
+        Long totalCreates = eventRepository.countByOwner_Id(event.getOwner().getId());
         achievementService.checkAndAward(
                 event.getOwner().getId(),
                 CriterionType.EVENT_CREATE.name(),
