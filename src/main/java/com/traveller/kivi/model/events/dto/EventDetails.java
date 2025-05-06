@@ -24,159 +24,63 @@ import jakarta.validation.constraints.NotNull;
 public class EventDetails {
 
     @NotNull
-    private Integer id;
+    public Integer id;
 
     @NotBlank
     @Enumerated(EnumType.STRING)
-    private EventType eventType;
+    public EventType eventType;
 
     @NotBlank
     @Enumerated(EnumType.STRING)
-    private Status status;
+    public Status status;
 
     @NotNull
     @Column(nullable = false)
-    private LocalDate created;
+    public LocalDate created;
 
     @NotNull
-    private LocalDate startDate;
+    public LocalDate startDate;
 
     @NotNull
-    private LocalDate endDate;
+    public LocalDate endDate;
 
     @NotNull
-    private Set<Integer> ratingIds = new HashSet<>();
+    public Set<Integer> ratingIds = new HashSet<>();
 
     @NotNull
-    private List<Integer> locationIds = new ArrayList<>();
+    public List<Integer> locationIds = new ArrayList<>();
 
     @NotNull
-    private List<Integer> userIds = new ArrayList<>();
+    public List<Integer> userIds = new ArrayList<>();
 
     @NotNull
-    private Integer ownerId;
+    public Integer ownerId;
 
     @NotBlank
     @NotNull
-    private String name;
+    public String name;
 
     @NotNull
     @NotEmpty
-    private String details;
+    public String details;
 
     @NotNull
-    private List<Integer> commentIds = new ArrayList<>();
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public EventType getEventType() {
-        return eventType;
-    }
-
-    public void setEventType(EventType eventType) {
-        this.eventType = eventType;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public LocalDate getCreated() {
-        return created;
-    }
-
-    public void setCreated(LocalDate created) {
-        this.created = created;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public Set<Integer> getRatingIds() {
-        return ratingIds;
-    }
-
-    public void setRatingIds(Set<Integer> ratingIds) {
-        this.ratingIds = ratingIds;
-    }
-
-    public List<Integer> getLocationIds() {
-        return locationIds;
-    }
-
-    public void setLocationIds(List<Integer> locationIds) {
-        this.locationIds = locationIds;
-    }
-
-    public List<Integer> getUserIds() {
-        return userIds;
-    }
-
-    public void setUserIds(List<Integer> userIds) {
-        this.userIds = userIds;
-    }
-
-    public Integer getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Integer ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
-    }
+    public List<Integer> commentIds = new ArrayList<>();
 
     public static EventDetails toEventDetails(Event event) {
         EventDetails dto = new EventDetails();
-        dto.setId(event.getId());
-        dto.setEventType(event.getEventType());
-        dto.setStatus(event.getStatus());
-        dto.setCreated(event.getCreated());
-        dto.setStartDate(event.getStartDate());
-        dto.setEndDate(event.getEndDate());
-        dto.setRatingIds(event.getRatings().stream().map(EventRating::getId).collect(Collectors.toSet()));
-        dto.setLocationIds(event.getLocations().stream().map(EventLocation::getId).collect(Collectors.toList()));
-        dto.setUserIds(event.getAttendants().stream().map(User::getId).collect(Collectors.toList()));
-        dto.setOwnerId(event.getOwner().getId());
-        dto.setName(event.getName());
-        dto.setDetails(event.getDetails());
+        dto.id = event.getId();
+        dto.eventType = event.getEventType();
+        dto.status = event.getStatus();
+        dto.created = event.getCreated();
+        dto.startDate = event.getStartDate();
+        dto.endDate = event.getEndDate();
+        dto.ratingIds = event.getRatings().stream().map(EventRating::getId).collect(Collectors.toSet());
+        dto.locationIds = event.getLocations().stream().map(EventLocation::getId).collect(Collectors.toList());
+        dto.userIds = event.getAttendants().stream().map(User::getId).collect(Collectors.toList());
+        dto.ownerId = event.getOwner().getId();
+        dto.name = event.getName();
+        dto.details = event.getDetails();
         return dto;
     }
 }
