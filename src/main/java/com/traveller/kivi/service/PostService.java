@@ -69,6 +69,18 @@ public class PostService {
     }
 
     /**
+     * Returns all posts.
+     * Used as a feed implementation
+     * 
+     * @param pageable
+     * @param userId
+     * @return
+     */
+    public Page<PostDetail> getAllPosts(Pageable pageable) {
+        return postRepository.findAll(pageable).map(PostDetail::toPostDetail);
+    }
+
+    /**
      * Returns the posts of users excluding the userId.
      * Used as a feed implementation
      * 

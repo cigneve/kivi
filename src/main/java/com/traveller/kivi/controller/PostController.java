@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.traveller.kivi.model.posts.Post;
@@ -42,9 +43,13 @@ public class PostController {
         return ResponseEntity.ok(createdPost);
     }
 
-    @GetMapping("/feed/{userId}")
-    public PagedModel<PostDetail> getPaginatedPosts(Pageable pageable, @PathVariable Integer userId) {
-        return new PagedModel<>(postService.getPostsOfOthers(pageable, userId));
+    @GetMapping("/feed/")
+    public PagedModel<PostDetail> getPaginatedPosts(Pageable pageable, @RequestParam(required = false) Integer userId) {
+        if (userId == null) {
+            return new PagedModel<>(postService.getAllPosts(pageable));
+        } else {
+            return new PagedModel<>(postService.getPostsOfOthers(pageable, userId));
+        }
     }
 
     @GetMapping("/{userId}")
