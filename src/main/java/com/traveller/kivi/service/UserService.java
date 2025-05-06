@@ -14,6 +14,9 @@ import com.traveller.exception.UserNotFoundException;
 import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.model.users.User.UserType;
 import com.traveller.kivi.model.users.UserDetail;
+import com.traveller.kivi.model.users.UserStats;
+import com.traveller.kivi.repository.EventRepository;
+import com.traveller.kivi.repository.PostRepository;
 import com.traveller.kivi.repository.UserRepository;
 
 import jakarta.validation.Valid;
@@ -22,6 +25,10 @@ import jakarta.validation.Valid;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private EventRepository eventRepository;
+    @Autowired
+    private PostRepository postRepository;
 
     @Autowired
     private ImageService imageService;
@@ -56,11 +63,12 @@ public class UserService {
      * @return if the operation was succesful
      */
     public UserDetail followUser(Integer followerId, Integer targetUserId) {
-        User follower = userRepository.findById(followerId).orElseThrow();
-        User target = userRepository.findById(targetUserId).orElseThrow();
+        User follower = getUserById(followerId);
+        User target = getUserById(targetUserId);
         Set<User> following = follower.getFollowing();
         if (!following.contains(target)) {
             following.add(target);
+            userRepository.save(follower);
         }
         return UserDetail.fromUser(target);
     }
@@ -77,6 +85,18 @@ public class UserService {
         }
     }
 
+    public UserDetail getUserDetail(Integer userId) {
+        return UserDetail.fromUser(getUserById(userId));
+    }
+
+    public Long getFollowerCount(Integer userId) {
+        return userRepository.countByFollower(userId);
+    }
+
+    public Long getFollowedCount(Integer userId) {
+        return userRepository.countByFollowing(userId);
+    }
+
     public InputStreamResource getProfilePicture(Integer userId) {
         User user = getUserById(userId);
         return imageService.getImageContentAsResource(user.getProfilePicture());
@@ -84,5 +104,16 @@ public class UserService {
 
     public void removeAll() {
         userRepository.deleteAll();
+    }
+
+    public UserStats getUserStats(Integer userId) {
+        getUserById(userId);
+        UserStats stats = new UserStats();
+        stats.createdEventCount = eventRepository.countByOwner_Id(userId);
+        stats.enrolledEventCount = eventRepository.countByAttendants_Id(userId);
+        stats.followedCount = userRepository.countByFollowing(userId);
+        stats.followerCount = userRepository.countByFollower(userId);
+        stats.postCount = postRepository.countByOwner_Id(userId);
+        return stats;
     }
 }

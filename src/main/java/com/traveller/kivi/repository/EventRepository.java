@@ -1,13 +1,28 @@
 package com.traveller.kivi.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.traveller.kivi.model.events.Event;
 
-
 @Repository
 public interface EventRepository extends JpaRepository<Event, Integer> {
 
-    int countByOwner_Id(Integer ownerId);
+    /**
+     * Number of attended events.
+     * 
+     * @param attendantId
+     * @return
+     */
+    @Query("SELECT COUNT(at) FROM Event e JOIN e.attendants at WHERE at.id = :attendantId")
+    Long countByAttendants_Id(Integer attendantId);
+
+    /**
+     * Number of owned events
+     * 
+     * @param ownerId
+     * @return
+     */
+    Long countByOwner_Id(Integer ownerId);
 }

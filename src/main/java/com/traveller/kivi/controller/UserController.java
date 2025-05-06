@@ -13,14 +13,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.model.users.UserDetail;
+import com.traveller.kivi.model.users.UserStats;
 import com.traveller.kivi.service.UserService;
 
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/users")
@@ -88,6 +89,11 @@ public class UserController {
      * @param userId id of the User
      * @return List of the followers
      */
+    @GetMapping("/{userId}/stats")
+    public UserStats getUserStats(@PathVariable Integer userId) {
+        return userService.getUserStats(userId);
+    }
+
     @GetMapping("/nuke")
     public boolean removeAll() {
 

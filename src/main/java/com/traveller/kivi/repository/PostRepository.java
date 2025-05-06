@@ -17,5 +17,5 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
     List<Post> findByOwner(User user);
 
-    int countByOwner_Id(Integer ownerId);
+    Long countByOwner_Id(Integer ownerId);
 }

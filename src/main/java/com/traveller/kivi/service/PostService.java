@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.traveller.exception.PostNotFoundException;
 import com.traveller.kivi.model.Image;
+import com.traveller.kivi.model.achievements.CriterionType;
 import com.traveller.kivi.model.posts.Post;
 import com.traveller.kivi.model.posts.PostCreateDTO;
 import com.traveller.kivi.model.posts.PostDetail;
@@ -19,9 +20,6 @@ import com.traveller.kivi.model.posts.PostTag;
 import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.repository.PostRepository;
 import com.traveller.kivi.repository.PostTagRepository;
-
-import com.traveller.kivi.service.AchievementService;
-import com.traveller.kivi.model.achievements.CriterionType;
 
 @Service
 public class PostService {
@@ -42,7 +40,7 @@ public class PostService {
 
     public Post createPost(Post post) {
         Post saved = postRepository.save(post);
-        int totalPosts = postRepository.countByOwner_Id(post.getOwner().getId());
+        Long totalPosts = postRepository.countByOwner_Id(post.getOwner().getId());
         achievementService.checkAndAward(
                 post.getOwner().getId(),
                 CriterionType.POST_CREATE.name(),

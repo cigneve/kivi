@@ -14,7 +14,7 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class AchievementService {
-    
+
     @Autowired
     private AchievementRepository achievementRepository;
 
@@ -25,16 +25,17 @@ public class AchievementService {
     private UserService userService;
 
     /**
-     * It checks all Achievements for the relevant criterion according to the user's currentCount 
+     * It checks all Achievements for the relevant criterion according to the user's
+     * currentCount
      * value and assigns badges to those who pass the threshold.
      */
     @Transactional
-    public void checkAndAward(Integer userId, String criterion, int currentCount) {
+    public void checkAndAward(Integer userId, String criterion, Long currentCount) {
         User user = userService.getUserById(userId);
         List<Achievement> list = achievementRepository.findByCriterion(criterion);
         for (Achievement a : list) {
             if (currentCount >= a.getThreshold()
-                && !userAchievementRepository.existsByUserAndAchievement(user, a)) {
+                    && !userAchievementRepository.existsByUserAndAchievement(user, a)) {
                 UserAchievement userAchievement = new UserAchievement(user, a, LocalDateTime.now());
                 userAchievementRepository.save(userAchievement);
             }

@@ -8,15 +8,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.traveller.kivi.model.achievements.CriterionType;
 import com.traveller.kivi.model.events.Event;
 import com.traveller.kivi.repository.EventRepository;
 
-import com.traveller.kivi.service.AchievementService;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-
-import com.traveller.kivi.model.achievements.CriterionType;
 
 @Service
 public class EventService {
@@ -60,7 +57,8 @@ public class EventService {
      * Retrieves an event by its ID.
      */
     public Event getEventById(Integer eventId) {
-        return eventRepository.findById(eventId).orElseThrow(() -> new NoSuchElementException("Event not found: " + eventId));
+        return eventRepository.findById(eventId)
+                .orElseThrow(() -> new NoSuchElementException("Event not found: " + eventId));
     }
 
     /**
@@ -68,12 +66,11 @@ public class EventService {
      */
     public Event createEvent(Event event) {
         em.persist(event);
-        int totalCreates = eventRepository.countByOwner_Id(event.getOwner().getId());
+        Long totalCreates = eventRepository.countByOwner_Id(event.getOwner().getId());
         achievementService.checkAndAward(
-            event.getOwner().getId(),
-            CriterionType.EVENT_CREATE.name(),
-            totalCreates
-        );
+                event.getOwner().getId(),
+                CriterionType.EVENT_CREATE.name(),
+                totalCreates);
         return event;
     }
 
