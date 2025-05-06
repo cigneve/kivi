@@ -15,8 +15,9 @@ public class PostDetail {
     private Integer userId; // ID of the user who created the post
     private String body; // Content of the post
     private List<String> imageIds = new ArrayList<>(); // List of image URLs associated with the post
-    private List<Integer> tagIds = new ArrayList<>(); // List of tags associated with the post
+    private List<String> tags = new ArrayList<>(); // List of tags associated with the post
     private String createdAt; // Timestamp for when the post was created
+    private String updatedAt; // Timestamp for when the post was last updated
 
     public Integer getPostId() {
         return postId;
@@ -50,12 +51,12 @@ public class PostDetail {
         this.imageIds = imageIds;
     }
 
-    public List<Integer> getTags() {
-        return tagIds;
+    public List<String> getTags() {
+        return tags;
     }
 
-    public void setTags(List<Integer> tagIds) {
-        this.tagIds = tagIds;
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     public String getCreatedAt() {
@@ -66,13 +67,21 @@ public class PostDetail {
         this.createdAt = createdAt;
     }
 
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     public static PostDetail toPostDetail(Post post) {
         PostDetail dto = new PostDetail();
         dto.setPostId(post.getId());
         dto.setUserId(post.getOwner().getId());
         dto.setBody(post.getBody());
         dto.setImages(post.getImages().stream().map(Image::getId).collect(Collectors.toList()));
-        dto.setTags(post.getTags().stream().map(PostTag::getId).collect(Collectors.toList()));
+        dto.setTags(post.getTags().stream().map(PostTag::getName).collect(Collectors.toList()));
         dto.setCreatedAt(post.getCreated().toString());
         return dto;
     }
