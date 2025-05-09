@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.traveller.kivi.model.Image;
 import com.traveller.kivi.model.users.User;
 
 import jakarta.persistence.Column;
@@ -78,6 +79,9 @@ public class Event {
 
     @OneToMany
     private List<EventComment> comments = new ArrayList<>();
+
+    @OneToMany
+    private List<Image> gallery = new ArrayList<>();
 
     public Event() {
         this.created = LocalDate.now();

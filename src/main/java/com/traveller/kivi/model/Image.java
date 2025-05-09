@@ -3,22 +3,28 @@ package com.traveller.kivi.model;
 import org.springframework.content.commons.annotations.ContentId;
 import org.springframework.content.commons.annotations.ContentLength;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 @Entity
 public class Image {
     @Id
+    @GeneratedValue
+    private Integer id;
+
     @ContentId
-    private String id;
+    private String contentId;
 
     @ContentLength
+    @Column(unique = true)
     private long contentLength;
 
-    private String contentMimeType = "text/plain";
+    private String contentMimeType = "image/png";
 
-    public Image(String id) {
-        this.id = id;
+    public Image(String contentId) {
+        this.contentId = contentId;
     }
 
     protected Image() {
@@ -28,7 +34,7 @@ public class Image {
         this.contentLength = contentLength;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -44,7 +50,7 @@ public class Image {
         this.contentMimeType = contentMimeType;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 

@@ -108,6 +108,12 @@ public class UserService {
         return imageService.getImageContentAsResource(user.getProfilePicture());
     }
 
+    public UserDetail setProfilePicture(Integer userId, InputStreamResource res) {
+        User user = getUserById(userId);
+        imageService.setImageContent(user.getProfilePicture(), res);
+        return UserDetail.fromUser(user);
+    }
+
     public void removeAll() {
         userRepository.deleteAll();
     }
