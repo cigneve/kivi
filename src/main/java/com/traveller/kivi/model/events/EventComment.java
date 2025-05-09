@@ -35,4 +35,9 @@ public class EventComment {
     @NotNull
     @NotEmpty
     private String commentBody;
+
+    /** Needed by the mapper: */
+   public Integer getId() {
+        return id;
+   }
 }
