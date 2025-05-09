@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.traveller.exception.EventNotFoundException;
 import com.traveller.kivi.model.achievements.CriterionType;
 import com.traveller.kivi.model.events.Event;
+import com.traveller.kivi.model.events.dto.EventCommentDTO;
 import com.traveller.kivi.model.events.dto.EventDetails;
 import com.traveller.kivi.repository.EventRepository;
 
@@ -86,5 +87,16 @@ public class EventService {
      */
     public void deleteEvent(Integer eventId) {
         eventRepository.deleteById(eventId);
+    }
+
+    /**
+     * Returns the list of EventCommentDTO objects
+     * 
+     * @param eventId
+     * @return List of EventCommentDTO's
+     */
+    public List<EventCommentDTO> getEventComments(Integer eventId) {
+        Event event = getEventById(eventId);
+        return event.getComments().stream().map(EventCommentDTO::fromEventComment).toList();
     }
 }

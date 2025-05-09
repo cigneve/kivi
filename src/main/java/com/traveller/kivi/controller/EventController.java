@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.traveller.kivi.model.events.Event;
+import com.traveller.kivi.model.events.dto.EventCommentDTO;
 import com.traveller.kivi.model.events.dto.EventDetails;
 import com.traveller.kivi.service.EventService;
 
@@ -94,4 +95,10 @@ public class EventController {
         eventService.deleteEvent(eventId);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/{eventId}/comments")
+    public List<EventCommentDTO> getEventComment(@PathVariable Integer eventId) {
+        return eventService.getEventComments(eventId);
+    }
+
 }
