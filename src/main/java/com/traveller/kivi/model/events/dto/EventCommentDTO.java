@@ -2,14 +2,8 @@ package com.traveller.kivi.model.events.dto;
 
 import java.time.LocalDate;
 
-import com.traveller.kivi.model.events.Event;
-import com.traveller.kivi.model.users.User;
+import com.traveller.kivi.model.events.EventComment;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -17,6 +11,16 @@ import jakarta.validation.constraints.NotNull;
  * Also used for Event Chat posts
  */
 public class EventCommentDTO {
+    public static EventCommentDTO fromEventComment(EventComment eventComment) {
+        var dto = new EventCommentDTO();
+        dto.id = eventComment.getId();
+        dto.eventId = eventComment.getEvent().getId();
+        dto.ownerId = eventComment.getOwner().getId();
+        dto.commentDate = eventComment.getCommentDate();
+        dto.commentBody = eventComment.getCommentBody();
+        return dto;
+    }
+
     @NotNull
     public Integer id;
 
