@@ -32,8 +32,8 @@ public class PostController {
     private PostService postService;
 
     @PostMapping("/create")
-    public ResponseEntity<Post> createPost(@Valid @RequestBody PostCreateDTO postDTO) {
-        Post createdPost = postService.createPostFromDTO(postDTO);
+    public ResponseEntity<PostDetail> createPost(@Valid @RequestBody PostCreateDTO postDTO) {
+        PostDetail createdPost = postService.createPostFromDTO(postDTO);
         return ResponseEntity.ok(createdPost);
     }
 
@@ -43,7 +43,7 @@ public class PostController {
         return ResponseEntity.ok(createdPost);
     }
 
-    @GetMapping("/feed/")
+    @GetMapping("/feed")
     public PagedModel<PostDetail> getPaginatedPosts(Pageable pageable, @RequestParam(required = false) Integer userId) {
         if (userId == null) {
             return new PagedModel<>(postService.getAllPosts(pageable));
