@@ -3,6 +3,7 @@ package com.traveller.kivi.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,28 +20,21 @@ import com.traveller.kivi.repository.EventLocationRepository;
 import com.traveller.kivi.repository.EventRepository;
 import com.traveller.kivi.repository.UserRepository;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 @Service
 public class EventService {
 
-    private final EventRepository eventRepository;
-    private final UserRepository userRepository;
-    private final EventLocationRepository locationRepository;
-    private final AchievementService achievementService;
-
-    @PersistenceContext
-    private EntityManager em;
-
-    public EventService(EventRepository eventRepository, UserRepository userRepository,
-            EventLocationRepository locationRepository, AchievementService achievementService) {
-        this.eventRepository = eventRepository;
-        this.userRepository = userRepository;
-        this.locationRepository = locationRepository;
-        this.achievementService = achievementService;
-    }
+    @Autowired
+    private EventRepository eventRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private EventLocationRepository locationRepository;
+    @Autowired
+    private AchievementService achievementService;
+    @Autowired
+    private UserService userService;
 
     /**
      * Retrieves all events.
@@ -86,13 +80,12 @@ public class EventService {
     /** New: DTO-based create flow */
     @Transactional
     public EventDetails createEventFromDTO(EventCreateDTO dto) {
-        User owner = userRepository.findById(dto.ownerId)
-                .orElseThrow(() -> new IllegalArgumentException("Owner not found: " + dto.ownerId));
+        User owner = userService.getUserById(dto.ownerId);
 
         List<EventLocation> locs = dto.locationIds.stream()
                 .map(id -> locationRepository.findById(id)
                         .orElseThrow(() -> new IllegalArgumentException("Location not found: " + id)))
-                .collect(Collectors.toList());
+                .toList();
 
         Event ev = EventCreateDTO.toEntity(dto, owner, locs);
         return createEvent(ev);
