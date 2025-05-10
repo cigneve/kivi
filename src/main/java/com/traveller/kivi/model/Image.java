@@ -18,7 +18,6 @@ public class Image {
     private String contentId;
 
     @ContentLength
-    @Column(unique = true)
     private long contentLength;
 
     private String contentMimeType = "image/png";

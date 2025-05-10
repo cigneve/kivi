@@ -1,11 +1,12 @@
 package com.traveller.kivi.service;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import com.traveller.exception.ImageNotFoundException;
@@ -39,14 +40,17 @@ public class ImageService {
     }
 
     public InputStream getImageContent(Image image) {
+        if (image == null) {
+            throw new NoSuchElementException("No such image exists.");
+        }
         return imageStore.getContent(image);
     }
 
-    public void setImageContent(Image image, InputStreamResource res) {
+    public void setImageContent(Image image, Resource res) {
         imageStore.setContent(image, res);
     }
 
-    public InputStreamResource getImageContentAsResource(Image image) {
+    public Resource getImageContentAsResource(Image image) {
         return new InputStreamResource(getImageContent(image));
     }
 

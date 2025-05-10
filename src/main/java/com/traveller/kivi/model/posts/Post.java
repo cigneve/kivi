@@ -1,20 +1,19 @@
 package com.traveller.kivi.model.posts;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import com.traveller.kivi.model.Image;
 import com.traveller.kivi.model.users.User;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -33,8 +32,9 @@ public class Post {
     @ManyToMany
     private Set<PostTag> tags = new HashSet<>();
 
-    @OneToMany
-    private List<Image> images = new ArrayList<>();
+    @OneToOne
+    @Nullable
+    private Image image;
 
     private String body;
 
@@ -51,18 +51,14 @@ public class Post {
         this.owner = owner;
     }
 
-    public Post(@NotNull User owner, @NotBlank String body, List<Image> images) {
+    public Post(@NotNull User owner, @NotBlank String body, Image image) {
         this.owner = owner;
         this.body = body;
-        this.images = images;
+        this.image = image;
     }
 
     public LocalDate getCreated() {
         return created;
-    }
-
-    public List<Image> getImages() {
-        return images;
     }
 
     public Set<User> getLikers() {
@@ -91,5 +87,29 @@ public class Post {
 
     public String getBody() {
         return body;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setLikers(Set<User> likers) {
+        this.likers = likers;
+    }
+
+    public void setTags(Set<PostTag> tags) {
+        this.tags = tags;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    public void setCreated(LocalDate created) {
+        this.created = created;
     }
 }

@@ -3,6 +3,9 @@ package com.traveller.kivi.model.posts;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -10,14 +13,15 @@ public class PostCreateDTO {
 
     // TODO: will remove when we migrate to spring security
     @NotNull
-    private Integer userId;
+    public Integer userId;
 
     @NotBlank
-    private String body;
+    public String body;
 
-    private List<String> images = new ArrayList<>();
+    @Nullable
+    public MultipartFile image;
 
-    private List<String> tags = new ArrayList<>();
+    public List<String> tags = new ArrayList<>();
 
     public Integer getUserId() {
         return userId;
@@ -35,14 +39,6 @@ public class PostCreateDTO {
         this.body = body;
     }
 
-    public List<String> getImages() {
-        return images;
-    }
-
-    public void setImages(List<String> images) {
-        this.images = images;
-    }
-
     public List<String> getTags() {
         return tags;
     }
@@ -50,4 +46,13 @@ public class PostCreateDTO {
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
+
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
+    }
+
 }

@@ -3,11 +3,14 @@ package com.traveller.kivi.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.traveller.kivi.model.posts.Post;
 import com.traveller.kivi.model.posts.PostCreateDTO;
 import com.traveller.kivi.model.posts.PostDetail;
 import com.traveller.kivi.service.PostService;
@@ -31,8 +33,11 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    @PostMapping("/create")
-    public ResponseEntity<PostDetail> createPost(@Valid @RequestBody PostCreateDTO postDTO) {
+    @PostMapping(path = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PostDetail> createPost(@Valid @ModelAttribute PostCreateDTO postDTO) {
+        if (postDTO.image != null && postDTO.image.isEmpty()) {
+            postDTO.image = null;
+        }
         PostDetail createdPost = postService.createPostFromDTO(postDTO);
         return ResponseEntity.ok(createdPost);
     }
@@ -41,6 +46,11 @@ public class PostController {
     public ResponseEntity<PostDetail> getPost(@PathVariable Integer postId) {
         PostDetail createdPost = postService.getPostDetail(postId);
         return ResponseEntity.ok(createdPost);
+    }
+
+    @GetMapping("/{postId}/photo")
+    public Resource getPostPhoto(@PathVariable Integer postId) {
+        return postService.getPostImage(postId);
     }
 
     @GetMapping("/feed")

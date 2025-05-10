@@ -5,13 +5,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.traveller.exception.UserNotFoundException;
-import com.traveller.kivi.model.Image;
 import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.model.users.User.UserType;
 import com.traveller.kivi.model.users.UserDetail;
@@ -102,12 +101,12 @@ public class UserService {
         return userRepository.countByFollowing(userId);
     }
 
-    public InputStreamResource getProfilePicture(Integer userId) {
+    public Resource getProfilePicture(Integer userId) {
         User user = getUserById(userId);
         return imageService.getImageContentAsResource(user.getProfilePicture());
     }
 
-    public UserDetail setProfilePicture(Integer userId, InputStreamResource res) {
+    public UserDetail setProfilePicture(Integer userId, Resource res) {
         User user = getUserById(userId);
         imageService.setImageContent(user.getProfilePicture(), res);
         return UserDetail.fromUser(user);

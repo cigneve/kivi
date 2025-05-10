@@ -1,13 +1,15 @@
 package com.traveller.kivi.service;
 
-import java.util.ArrayList;
+import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.traveller.exception.PostNotFoundException;
 import com.traveller.kivi.model.Image;
@@ -110,16 +112,25 @@ public class PostService {
     }
 
     private Post mapDTO(PostCreateDTO postDTO) {
-        User owner = userService.getUserById(postDTO.getUserId());
-        Post constructPost = new Post(owner, postDTO.getBody(), new ArrayList<>());
-        for (String image : postDTO.getImages()) {
-            Image imageObj = imageService.createImage(image);
-            constructPost.getImages().add(imageObj);
+        User owner = userService.getUserById(postDTO.userId);
+        Post constructPost = new Post(owner, postDTO.body, null);
+        if (postDTO.image != null) {
+            MultipartFile image = postDTO.image;
+            InputStream stream;
+            try {
+                stream = image.getInputStream();
+            } catch (Exception e) {
+                throw new RuntimeException("Error getting image from PostCreateDTO");
+            }
+            Image im = imageService.createImage(stream);
+            constructPost.setImage(im);
+
         }
-        constructPost.setBody(postDTO.getBody());
         // Handle tags
-        if (postDTO.getTags() != null) {
-            postDTO.getTags().forEach(tagName -> {
+        if (postDTO.tags != null)
+
+        {
+            postDTO.tags.forEach(tagName -> {
                 PostTag tag = postTagRepository.findByName(tagName)
                         .orElseGet(() -> postTagRepository.save(new PostTag(tagName)));
                 constructPost.getTags().add(tag);
@@ -168,4 +179,10 @@ public class PostService {
 
         return PostDetail.toPostDetail(post);
     }
+
+    public Resource getPostImage(Integer postId) {
+        Post post = getPostById(postId);
+        return imageService.getImageContentAsResource(post.getImage());
+    }
+
 }
