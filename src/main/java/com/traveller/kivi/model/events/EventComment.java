@@ -8,7 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -35,6 +35,11 @@ public class EventComment {
     @NotNull
     @NotEmpty
     private String commentBody;
+
+    @PrePersist
+    protected void onCreate() {
+        this.commentDate = LocalDate.now();
+    }
 
     public Integer getId() {
         return id;

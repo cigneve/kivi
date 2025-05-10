@@ -17,7 +17,6 @@ public class PostDetail {
     public Integer imageId; // List of image URLs associated with the post
     public List<String> tags = new ArrayList<>(); // List of tags associated with the post
     public String createdAt; // Timestamp for when the post was created
-    public String updatedAt; // Timestamp for when the post was last updated
     public Integer likeCount;
 
     public static PostDetail toPostDetail(Post post) {

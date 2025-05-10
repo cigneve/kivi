@@ -75,12 +75,15 @@ public class User {
     @JsonIgnore
     private Set<String> languages = new HashSet<>();
 
+    protected void onCreate() {
+        this.registrationDate = LocalDate.now();
+    }
+
     public Set<String> getLanguages() {
         return languages;
     }
 
     public User() {
-        this.registrationDate = LocalDate.now();
     }
 
     public Image getProfilePicture() {

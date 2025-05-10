@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -49,6 +50,11 @@ public class Post {
 
     public Post(@NotNull User owner) {
         this.owner = owner;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.created = LocalDate.now();
     }
 
     public Post(@NotNull User owner, @NotBlank String body, Image image) {
