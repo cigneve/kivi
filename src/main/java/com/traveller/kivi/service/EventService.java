@@ -137,7 +137,9 @@ public class EventService {
      */
     public List<EventRatingDTO> getEventRatings(Integer eventId) {
         Event event = getEventById(eventId);
-        return event.getRatings().stream().map(EventRatingDTO::fromEventRating).toList();
+        return event.getRatings().stream().map(EventRatingDTO::fromEventRating).sorted((o1, o2) -> {
+            return o1.date.compareTo(o2.date);
+        }).toList();
     }
 
     @Transactional
@@ -179,4 +181,37 @@ public class EventService {
         event.setSkeleton(skeleton);
         return eventRepository.save(event);
     }
+
+    /**
+     * List of owned events.
+     * 
+     * @param userId owner id
+     * @return
+     */
+    public List<EventDetails> getOwnedEvents(Integer userId) {
+        return eventRepository.getByOwner_Id(userId).stream().map(EventDetails::toEventDetails).toList();
+    }
+
+    public List<EventRatingDTO> getEventChatComments(Integer eventId) {
+        Event event = getEventById(eventId);
+        return event.getRatings().stream().map(EventRatingDTO::fromEventRating).sorted((o1, o2) -> {
+            return o1.date.compareTo(o2.date);
+        }).toList();
+    }
+
+    /**
+     * List of attended events.
+     * 
+     * @param attendantId
+     * @return
+     */
+    public List<EventDetails> getAttendedEvents(Integer userId) {
+        return eventRepository.getByAttendants_Id(userId).stream().map(EventDetails::toEventDetails).toList();
+    }
+
+    public String cancelEvent(Integer eventId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'cancelEvent'");
+    }
+
 }

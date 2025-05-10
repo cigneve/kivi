@@ -1,5 +1,7 @@
 package com.traveller.kivi.model.events.dto;
 
+import java.time.LocalDate;
+
 import com.traveller.kivi.model.events.EventRating;
 
 import jakarta.validation.constraints.NotNull;
@@ -22,4 +24,6 @@ public class EventRatingDTO {
     public Integer rate;
     @NotNull
     public String comment;
+    @NotNull
+    public LocalDate date;
 }

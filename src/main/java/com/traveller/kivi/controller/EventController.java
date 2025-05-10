@@ -120,18 +120,13 @@ public class EventController {
         return eventService.getAttendedEvents(userId);
     }
 
-    @PutMapping("/{eventId}/addUser/{userId}")
-    public String addUserToEvent(@PathVariable Long eventId, @PathVariable Long userId) {
-        return eventService.addUserToEvent(eventId, userId);
-    }
-
     @PutMapping("/{eventId}/cancel")
-    public String cancelEvent(@PathVariable Long eventId) {
+    public String cancelEvent(@PathVariable Integer eventId) {
         return eventService.cancelEvent(eventId);
     }
 
     @PutMapping("/{eventId}/register/{userId}")
-    public String registerToEvent(@PathVariable Long eventId, @PathVariable Long userId) {
+    public EventDetails registerToEvent(@PathVariable Integer eventId, @PathVariable Integer userId) {
         return eventService.registerToEvent(eventId, userId);
     }
 }
