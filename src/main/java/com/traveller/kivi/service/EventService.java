@@ -1,7 +1,7 @@
 package com.traveller.kivi.service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +12,7 @@ import com.traveller.exception.EventNotFoundException;
 import com.traveller.kivi.model.achievements.CriterionType;
 import com.traveller.kivi.model.events.Event;
 import com.traveller.kivi.model.events.EventLocation;
+import com.traveller.kivi.model.events.EventSkeleton;
 import com.traveller.kivi.model.events.dto.EventCommentDTO;
 import com.traveller.kivi.model.events.dto.EventCreateDTO;
 import com.traveller.kivi.model.events.dto.EventDetails;
@@ -19,6 +20,7 @@ import com.traveller.kivi.model.events.dto.EventRatingDTO;
 import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.repository.EventLocationRepository;
 import com.traveller.kivi.repository.EventRepository;
+import com.traveller.kivi.repository.EventSkeletonRepository;
 import com.traveller.kivi.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -32,6 +34,9 @@ public class EventService {
     private UserRepository userRepository;
     @Autowired
     private EventLocationRepository locationRepository;
+    @Autowired
+    private EventSkeletonRepository eventSkeletonRepository;
+
     @Autowired
     private AchievementService achievementService;
     @Autowired
@@ -121,7 +126,7 @@ public class EventService {
      */
     public List<EventCommentDTO> getEventComments(Integer eventId) {
         Event event = getEventById(eventId);
-        return event.getComments().stream().map(EventCommentDTO::fromEventComment).toList();
+        return event.getSkeleton().getComments().stream().map(EventCommentDTO::fromEventComment).toList();
     }
 
     /**
@@ -133,5 +138,45 @@ public class EventService {
     public List<EventRatingDTO> getEventRatings(Integer eventId) {
         Event event = getEventById(eventId);
         return event.getRatings().stream().map(EventRatingDTO::fromEventRating).toList();
+    }
+
+    @Transactional
+    public EventDetails registerToEvent(Integer eventId, Integer userId) {
+        Event event = getEventById(eventId);
+        User user = userService.getUserById(userId);
+        if (!event.getAttendants().contains(user)) {
+            event.getAttendants().add(user);
+            eventRepository.save(event);
+        }
+        return EventDetails.toEventDetails(event);
+    }
+
+    public EventDetails createEvent(EventCreateDTO dto) {
+        Event event;
+        if (dto.skeletonId != null) {
+            event = createEventFromSkeleton(dto);
+        } else {
+            event = createIndependentEvent(dto);
+        }
+        return EventDetails.toEventDetails(event);
+    }
+
+    private Event createEventFromSkeleton(EventCreateDTO dto) {
+        EventSkeleton skeleton = eventSkeletonRepository.findById(dto.skeletonId)
+                .orElseThrow(() -> new IllegalArgumentException("EventSkeleton not found with ID: " + dto.skeletonId));
+        Event event = EventCreateDTO.toEntity(dto, userService.getUserById(dto.ownerId), skeleton.getLocations());
+        event.setSkeleton(skeleton);
+        return eventRepository.save(event);
+    }
+
+    private Event createIndependentEvent(EventCreateDTO dto) {
+        Event event = EventCreateDTO.toEntity(dto, null, new ArrayList<>());
+        EventSkeleton skeleton = new EventSkeleton();
+        skeleton.setDetails(event.getDetails());
+        skeleton.setEventType(event.getEventType());
+        skeleton.setLocations(event.getLocations());
+        eventSkeletonRepository.save(skeleton);
+        event.setSkeleton(skeleton);
+        return eventRepository.save(event);
     }
 }

@@ -78,7 +78,7 @@ public class Event {
     private String details;
 
     @OneToMany
-    private List<EventComment> comments = new ArrayList<>();
+    private List<EventComment> chatComments = new ArrayList<>();
 
     @OneToMany
     private List<Image> gallery = new ArrayList<>();
@@ -159,14 +159,6 @@ public class Event {
         this.details = details;
     }
 
-    public List<EventComment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<EventComment> comments) {
-        this.comments = comments;
-    }
-
     public EventType getEventType() {
         return eventType;
     }
@@ -193,6 +185,30 @@ public class Event {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public List<EventComment> getChatComments() {
+        return chatComments;
+    }
+
+    public void setChatComments(List<EventComment> chatComments) {
+        this.chatComments = chatComments;
+    }
+
+    public List<Image> getGallery() {
+        return gallery;
+    }
+
+    public void setGallery(List<Image> gallery) {
+        this.gallery = gallery;
+    }
+
+    public EventSkeleton getSkeleton() {
+        return skeleton;
+    }
+
+    public void setSkeleton(EventSkeleton skeleton) {
+        this.skeleton = skeleton;
     }
 
 }
