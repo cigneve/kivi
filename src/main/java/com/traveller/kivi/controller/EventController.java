@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.traveller.kivi.model.events.Event;
 import com.traveller.kivi.model.events.dto.EventCommentDTO;
 import com.traveller.kivi.model.events.dto.EventDetails;
+import com.traveller.kivi.model.events.dto.EventCreateDTO;
 import com.traveller.kivi.service.EventService;
 
 import jakarta.validation.Valid;
@@ -28,21 +29,18 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/events")
 public class EventController {
 
-    @Autowired
-    private EventService eventService;
+    private final EventService eventService;
 
     public EventController(EventService eventService) {
         this.eventService = eventService;
     }
 
-    /**
-     * Creates new event.
-     */
+    /** Creates a new Event from DTO and returns EventDetails */
     @PostMapping
-    public ResponseEntity<EventDetails> createEvent(@Valid @RequestBody Event event) {
-
-        EventDetails created = eventService.createEvent(event);
-        return ResponseEntity.ok(created);
+    public ResponseEntity<EventDetails> createEvent(
+            @Valid @RequestBody EventCreateDTO dto) {
+        EventDetails details = eventService.createEventFromDTO(dto);
+        return ResponseEntity.ok(details);
     }
 
     /**
