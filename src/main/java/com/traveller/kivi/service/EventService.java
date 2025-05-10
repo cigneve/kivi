@@ -15,6 +15,7 @@ import com.traveller.kivi.model.events.EventLocation;
 import com.traveller.kivi.model.events.dto.EventCommentDTO;
 import com.traveller.kivi.model.events.dto.EventCreateDTO;
 import com.traveller.kivi.model.events.dto.EventDetails;
+import com.traveller.kivi.model.events.dto.EventRatingDTO;
 import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.repository.EventLocationRepository;
 import com.traveller.kivi.repository.EventRepository;
@@ -115,11 +116,22 @@ public class EventService {
     /**
      * Returns the list of EventCommentDTO objects
      * 
-     * @param eventId
+     * @param eventId event to query
      * @return List of EventCommentDTO's
      */
     public List<EventCommentDTO> getEventComments(Integer eventId) {
         Event event = getEventById(eventId);
         return event.getComments().stream().map(EventCommentDTO::fromEventComment).toList();
+    }
+
+    /**
+     * Returns the list of EventRatingDTO objects
+     * 
+     * @param eventId event to query
+     * @return
+     */
+    public List<EventRatingDTO> getEventRatings(Integer eventId) {
+        Event event = getEventById(eventId);
+        return event.getRatings().stream().map(EventRatingDTO::fromEventRating).toList();
     }
 }
