@@ -113,6 +113,11 @@ public class UserController {
         return userService.followUser(userId, targetUserId);
     }
 
+    @PostMapping("/{userId}/unfollow")
+    public UserDetail unfollowUser(@PathVariable Integer userId, @RequestParam Integer targetUserId) {
+        return userService.unfollowUser(userId, targetUserId);
+    }
+
     /**
      * Returns the followers of an User
      * 

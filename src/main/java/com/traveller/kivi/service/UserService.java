@@ -77,6 +77,24 @@ public class UserService {
         return UserDetail.fromUser(target);
     }
 
+    /**
+     * Remove an User from other's followed user list.
+     * 
+     * @param followerId   Id of user that follows
+     * @param targetUserId Id of user that is followed
+     * @return the user that follows
+     */
+    public UserDetail unfollowUser(Integer followerId, Integer targetUserId) {
+        User follower = getUserById(followerId);
+        User target = getUserById(targetUserId);
+        Set<User> following = follower.getFollowing();
+        if (following.contains(target)) {
+            following.remove(target);
+            userRepository.save(follower);
+        }
+        return UserDetail.fromUser(target);
+    }
+
     public boolean userExistsById(Integer userId) {
         return userRepository.existsById(userId);
     }
