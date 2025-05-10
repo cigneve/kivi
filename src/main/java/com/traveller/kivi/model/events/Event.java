@@ -83,6 +83,10 @@ public class Event {
     @OneToMany
     private List<Image> gallery = new ArrayList<>();
 
+    @ManyToOne
+    @NotNull
+    private EventSkeleton skeleton;
+
     public Event() {
         this.created = LocalDate.now();
     }

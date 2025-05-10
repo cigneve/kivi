@@ -35,7 +35,6 @@ public class EventDetails {
     public Status status;
 
     @NotNull
-    @Column(nullable = false)
     public LocalDate created;
 
     @NotNull
@@ -66,6 +65,8 @@ public class EventDetails {
 
     @NotNull
     public List<Integer> commentIds = new ArrayList<>();
+
+    public Integer skeletonId;
 
     public static EventDetails toEventDetails(Event event) {
         EventDetails dto = new EventDetails();

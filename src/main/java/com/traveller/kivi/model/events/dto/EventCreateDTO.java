@@ -56,6 +56,11 @@ public class EventCreateDTO {
     @NotNull
     public LocalDate endDate;
 
+    /**
+     * null if it is newly created
+     */
+    public Integer skeletonId;
+
     public List<Integer> locationIds = new ArrayList<>();
 
 }
