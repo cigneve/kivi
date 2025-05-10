@@ -36,8 +36,7 @@ public class UserService {
 
     public User createUser(@Valid User user) {
         if (user.getProfilePicture() == null) {
-            Image defaultImage = imageService.createImage("default-profile", "default-content");
-            user.setProfilePicture(defaultImage);
+            user.setProfilePicture(imageService.getDefaultImage());
         }
 
         return userRepository.save(user);

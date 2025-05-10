@@ -2,7 +2,6 @@ package com.traveller.kivi.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,8 +113,7 @@ public class PostService {
         User owner = userService.getUserById(postDTO.getUserId());
         Post constructPost = new Post(owner, postDTO.getBody(), new ArrayList<>());
         for (String image : postDTO.getImages()) {
-            String imageId = new StringBuilder().append(owner.getId()).append(UUID.randomUUID().toString()).toString();
-            Image imageObj = imageService.createImage(imageId, image);
+            Image imageObj = imageService.createImage(image);
             constructPost.getImages().add(imageObj);
         }
         constructPost.setBody(postDTO.getBody());
