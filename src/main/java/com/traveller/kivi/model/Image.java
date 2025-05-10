@@ -54,4 +54,12 @@ public class Image {
         return id;
     }
 
+    public String getContentId() {
+        return contentId;
+    }
+
+    public void setContentId(String contentId) {
+        this.contentId = contentId;
+    }
+
 }
