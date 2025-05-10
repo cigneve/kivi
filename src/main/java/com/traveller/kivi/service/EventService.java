@@ -11,12 +11,17 @@ import org.springframework.stereotype.Service;
 import com.traveller.exception.EventNotFoundException;
 import com.traveller.kivi.model.achievements.CriterionType;
 import com.traveller.kivi.model.events.Event;
+import com.traveller.kivi.model.events.EventComment;
 import com.traveller.kivi.model.events.EventLocation;
+import com.traveller.kivi.model.events.EventRating;
 import com.traveller.kivi.model.events.EventSkeleton;
+import com.traveller.kivi.model.events.dto.EventCommentCreateDTO;
 import com.traveller.kivi.model.events.dto.EventCommentDTO;
 import com.traveller.kivi.model.events.dto.EventCreateDTO;
 import com.traveller.kivi.model.events.dto.EventDetails;
+import com.traveller.kivi.model.events.dto.EventRatingCreateDTO;
 import com.traveller.kivi.model.events.dto.EventRatingDTO;
+import com.traveller.kivi.model.events.dto.EventSkeletonDTO;
 import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.repository.EventLocationRepository;
 import com.traveller.kivi.repository.EventRepository;
@@ -25,6 +30,7 @@ import com.traveller.kivi.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
+@Transactional
 @Service
 public class EventService {
 
@@ -174,6 +180,7 @@ public class EventService {
     private Event createIndependentEvent(EventCreateDTO dto) {
         Event event = EventCreateDTO.toEntity(dto, null, new ArrayList<>());
         EventSkeleton skeleton = new EventSkeleton();
+        skeleton.setOwner(userService.getUserById(dto.ownerId));
         skeleton.setDetails(event.getDetails());
         skeleton.setEventType(event.getEventType());
         skeleton.setLocations(event.getLocations());
@@ -192,10 +199,10 @@ public class EventService {
         return eventRepository.getByOwner_Id(userId).stream().map(EventDetails::toEventDetails).toList();
     }
 
-    public List<EventRatingDTO> getEventChatComments(Integer eventId) {
+    public List<EventCommentDTO> getEventChatComments(Integer eventId) {
         Event event = getEventById(eventId);
-        return event.getRatings().stream().map(EventRatingDTO::fromEventRating).sorted((o1, o2) -> {
-            return o1.date.compareTo(o2.date);
+        return event.getChatComments().stream().map(EventCommentDTO::fromEventComment).sorted((o1, o2) -> {
+            return o1.commentDate.compareTo(o2.commentDate);
         }).toList();
     }
 
@@ -212,6 +219,54 @@ public class EventService {
     public String cancelEvent(Integer eventId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'cancelEvent'");
+    }
+
+    @Transactional
+    public EventCommentDTO postChatComment(Integer eventId, EventCommentCreateDTO commentDTO) {
+        Event event = getEventById(eventId);
+        EventComment comment = toEventComment(eventId, commentDTO);
+        event.getChatComments().add(comment);
+        eventRepository.save(event);
+        return EventCommentDTO.fromEventComment(comment);
+    }
+
+    @Transactional
+    public EventRatingDTO postRating(Integer eventId, EventRatingCreateDTO ratingDTO) {
+        Event event = getEventById(eventId);
+        EventRating rating = toEventRating(eventId, ratingDTO);
+        event.getRatings().add(rating);
+        eventRepository.save(event);
+        return EventRatingDTO.fromEventRating(rating);
+    }
+
+    @Transactional
+    public EventCommentDTO postEventComment(Integer eventId, EventCommentCreateDTO commentDTO) {
+        Event event = getEventById(eventId);
+        EventComment comment = toEventComment(eventId, commentDTO);
+        EventSkeleton skeleton = event.getSkeleton();
+        skeleton.getComments().add(comment);
+        eventSkeletonRepository.save(skeleton);
+        return EventCommentDTO.fromEventComment(comment);
+    }
+
+    private EventRating toEventRating(Integer eventId, EventRatingCreateDTO eventRatingCreateDTO) {
+        var dto = new EventRating();
+        dto.setOwner(userService.getUserById(eventRatingCreateDTO.ownerId));
+        dto.setComment(eventRatingCreateDTO.comment);
+        dto.setRate(eventRatingCreateDTO.rate);
+        return dto;
+    }
+
+    private EventComment toEventComment(Integer eventId, EventCommentCreateDTO eventCommentCreateDTO) {
+        var dto = new EventComment();
+        dto.setCommentBody(eventCommentCreateDTO.comment);
+        dto.setOwner(userService.getUserById(eventCommentCreateDTO.ownerId));
+        dto.setEvent(getEventById(eventId));
+        return dto;
+    }
+
+    public EventSkeletonDTO getEventSkeleton(Integer eventId) {
+        return EventSkeletonDTO.fromEventSkeleton(getEventById(eventId).getSkeleton());
     }
 
 }

@@ -51,6 +51,11 @@ public class UserController {
         return userService.getUsersByUserType(userType, pageable);
     }
 
+    @GetMapping("/{userId}")
+    public UserDetail getUserDetail(@PathVariable Integer userId) {
+        return userService.getUserDetail(userId);
+    }
+
     /**
      * Returns the followers of an User
      * 
@@ -127,6 +132,11 @@ public class UserController {
     @GetMapping("/{userId}/stats")
     public UserStats getUserStats(@PathVariable Integer userId) {
         return userService.getUserStats(userId);
+    }
+
+    @GetMapping("/{userId}/checkPassword")
+    public Boolean checkPassword(@PathVariable Integer userId, @RequestParam String password) {
+        return userService.isPasswordCorrect(userId, password);
     }
 
     @GetMapping("/nuke")

@@ -13,12 +13,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.traveller.kivi.model.events.dto.EventCommentCreateDTO;
 import com.traveller.kivi.model.events.dto.EventCommentDTO;
 import com.traveller.kivi.model.events.dto.EventCreateDTO;
 import com.traveller.kivi.model.events.dto.EventDetails;
+import com.traveller.kivi.model.events.dto.EventRatingCreateDTO;
 import com.traveller.kivi.model.events.dto.EventRatingDTO;
+import com.traveller.kivi.model.events.dto.EventSkeletonDTO;
 import com.traveller.kivi.service.EventService;
 
 import jakarta.validation.Valid;
@@ -105,7 +109,7 @@ public class EventController {
     }
 
     @GetMapping("/{eventId}/chat")
-    public List<EventRatingDTO> getEventChatComments(@PathVariable Integer eventId) {
+    public List<EventCommentDTO> getEventChatComments(@PathVariable Integer eventId) {
         return eventService.getEventChatComments(eventId);
     }
 
@@ -129,4 +133,26 @@ public class EventController {
     public EventDetails registerToEvent(@PathVariable Integer eventId, @PathVariable Integer userId) {
         return eventService.registerToEvent(eventId, userId);
     }
+
+    @PostMapping("/{eventId}/comments")
+    public EventCommentDTO postComment(@PathVariable Integer eventId, @RequestBody EventCommentCreateDTO commentDTO) {
+        return eventService.postEventComment(eventId, commentDTO);
+    }
+
+    @PostMapping("/{eventId}/ratings")
+    public EventRatingDTO postRating(@PathVariable Integer eventId, @RequestBody EventRatingCreateDTO commentDTO) {
+        return eventService.postRating(eventId, commentDTO);
+    }
+
+    @PostMapping("/{eventId}/chat")
+    public EventCommentDTO postChatComment(@PathVariable Integer eventId,
+            @RequestBody EventCommentCreateDTO commentDTO) {
+        return eventService.postChatComment(eventId, commentDTO);
+    }
+
+    @GetMapping("/{eventId}/skeleton")
+    public EventSkeletonDTO getEventSkeleton(@RequestParam Integer eventId) {
+        return eventService.getEventSkeleton(eventId);
+    }
+
 }

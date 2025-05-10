@@ -71,4 +71,21 @@ public class PostController {
     public PostDetail updatePostTags(@PathVariable Integer postId, @RequestBody List<String> tags) {
         return postService.updatePostTags(postId, tags);
     }
+
+    @PostMapping("/{postId}/like")
+    public ResponseEntity<PostDetail> likePost(
+            @PathVariable Integer postId,
+            @RequestParam Integer userId) {
+        PostDetail dto = postService.likePost(postId, userId);
+        return ResponseEntity.ok(dto);
+    }
+
+    @PostMapping("/{postId}/unlike")
+    public ResponseEntity<PostDetail> unlikePost(
+            @PathVariable Integer postId,
+            @RequestParam Integer userId) {
+        PostDetail dto = postService.unlikePost(postId, userId);
+        return ResponseEntity.ok(dto);
+    }
+
 }

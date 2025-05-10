@@ -144,4 +144,9 @@ public class UserService {
         stats.postCount = postRepository.countByOwner_Id(userId);
         return stats;
     }
+
+    public boolean isPasswordCorrect(Integer userId, String password) {
+        User user = getUserById(userId);
+        return user.getPassword().equals(password);
+    }
 }

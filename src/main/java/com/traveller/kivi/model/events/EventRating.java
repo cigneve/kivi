@@ -2,6 +2,8 @@ package com.traveller.kivi.model.events;
 
 import org.hibernate.validator.constraints.Range;
 
+import com.traveller.kivi.model.users.User;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -23,6 +25,10 @@ public class EventRating {
 
     @NotNull
     private String comment;
+
+    @NotNull
+    @ManyToOne
+    private User owner;
 
     public Integer getId() {
         return id;
@@ -54,5 +60,13 @@ public class EventRating {
 
     public String getComment() {
         return comment;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }

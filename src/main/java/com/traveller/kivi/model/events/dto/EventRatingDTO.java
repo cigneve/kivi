@@ -13,11 +13,14 @@ public class EventRatingDTO {
         dto.rate = eventRating.getRate();
         dto.comment = eventRating.getComment();
         dto.eventId = eventRating.getEvent().getId();
+        dto.ownerId = eventRating.getOwner().getId();
         return dto;
     }
 
     @NotNull
     public Integer id;
+    @NotNull
+    public Integer ownerId;
     @NotNull
     public Integer eventId;
     @NotNull

@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.Set;
 
 import com.traveller.kivi.model.events.Event.EventType;
+import com.traveller.kivi.model.users.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -25,6 +27,9 @@ public class EventSkeleton {
     @Id
     @GeneratedValue
     private Integer id;
+
+    @ManyToOne
+    private User owner;
 
     @Enumerated(EnumType.STRING)
     private EventType eventType;
@@ -102,6 +107,14 @@ public class EventSkeleton {
 
     public void setComments(List<EventComment> comments) {
         this.comments = comments;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
 }
