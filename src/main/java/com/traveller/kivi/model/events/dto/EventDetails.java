@@ -10,11 +10,9 @@ import java.util.stream.Collectors;
 import com.traveller.kivi.model.events.Event;
 import com.traveller.kivi.model.events.Event.EventType;
 import com.traveller.kivi.model.events.Event.Status;
-import com.traveller.kivi.model.events.EventLocation;
 import com.traveller.kivi.model.events.EventRating;
 import com.traveller.kivi.model.users.User;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
@@ -47,7 +45,7 @@ public class EventDetails {
     public Set<Integer> ratingIds = new HashSet<>();
 
     @NotNull
-    public List<Integer> locationIds = new ArrayList<>();
+    public List<EventLocationDTO> locations = new ArrayList<>();
 
     @NotNull
     public List<Integer> userIds = new ArrayList<>();
@@ -77,7 +75,7 @@ public class EventDetails {
         dto.startDate = event.getStartDate();
         dto.endDate = event.getEndDate();
         dto.ratingIds = event.getRatings().stream().map(EventRating::getId).collect(Collectors.toSet());
-        dto.locationIds = event.getLocations().stream().map(EventLocation::getId).collect(Collectors.toList());
+        dto.locations = event.getLocations().stream().map(EventLocationDTO::fromEventLocation).toList();
         dto.userIds = event.getAttendants().stream().map(User::getId).collect(Collectors.toList());
         dto.ownerId = event.getOwner().getId();
         dto.name = event.getName();

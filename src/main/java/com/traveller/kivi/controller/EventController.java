@@ -20,6 +20,8 @@ import com.traveller.kivi.model.events.dto.EventCommentCreateDTO;
 import com.traveller.kivi.model.events.dto.EventCommentDTO;
 import com.traveller.kivi.model.events.dto.EventCreateDTO;
 import com.traveller.kivi.model.events.dto.EventDetails;
+import com.traveller.kivi.model.events.dto.EventLocationCreateDTO;
+import com.traveller.kivi.model.events.dto.EventLocationDTO;
 import com.traveller.kivi.model.events.dto.EventRatingCreateDTO;
 import com.traveller.kivi.model.events.dto.EventRatingDTO;
 import com.traveller.kivi.model.events.dto.EventSkeletonDTO;
@@ -155,4 +157,45 @@ public class EventController {
         return eventService.getEventSkeleton(eventId);
     }
 
+    @PostMapping("/locations")
+    public EventLocationDTO createEventLocation(@Valid @RequestBody EventLocationCreateDTO dto) {
+        return eventService.createEventLocation(dto);
+    }
+
+    @GetMapping("/locations/{locationId}")
+    public ResponseEntity<EventLocationDTO> getEventLocation(@PathVariable Integer locationId) {
+        try {
+            EventLocationDTO location = eventService.getEventLocationById(locationId);
+            return ResponseEntity.ok(location);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/locations")
+    public List<EventLocationDTO> getAllEventLocations() {
+        return eventService.getAllEventLocations();
+    }
+
+    @PutMapping("/locations/{locationId}")
+    public ResponseEntity<EventLocationDTO> updateEventLocation(
+            @PathVariable Integer locationId,
+            @Valid @RequestBody EventLocationCreateDTO dto) {
+        try {
+            EventLocationDTO updated = eventService.updateEventLocation(locationId, dto);
+            return ResponseEntity.ok(updated);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/locations/{locationId}")
+    public ResponseEntity<Void> deleteEventLocation(@PathVariable Integer locationId) {
+        try {
+            eventService.deleteEventLocation(locationId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

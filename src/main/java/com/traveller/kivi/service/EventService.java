@@ -19,6 +19,8 @@ import com.traveller.kivi.model.events.dto.EventCommentCreateDTO;
 import com.traveller.kivi.model.events.dto.EventCommentDTO;
 import com.traveller.kivi.model.events.dto.EventCreateDTO;
 import com.traveller.kivi.model.events.dto.EventDetails;
+import com.traveller.kivi.model.events.dto.EventLocationCreateDTO;
+import com.traveller.kivi.model.events.dto.EventLocationDTO;
 import com.traveller.kivi.model.events.dto.EventRatingCreateDTO;
 import com.traveller.kivi.model.events.dto.EventRatingDTO;
 import com.traveller.kivi.model.events.dto.EventSkeletonDTO;
@@ -267,6 +269,48 @@ public class EventService {
 
     public EventSkeletonDTO getEventSkeleton(Integer eventId) {
         return EventSkeletonDTO.fromEventSkeleton(getEventById(eventId).getSkeleton());
+    }
+
+    public EventLocationDTO createEventLocation(EventLocationCreateDTO dto) {
+        EventLocation location = new EventLocation();
+        location.setLocation(dto.location);
+        location.setTitle(dto.title);
+        location.setDescription(dto.description);
+        location.setKeywords(dto.keywords);
+        location.setFeatured(dto.featured);
+
+        EventLocation savedLocation = locationRepository.save(location);
+        return EventLocationDTO.fromEventLocation(savedLocation);
+    }
+
+    public EventLocationDTO getEventLocationById(Integer locationId) {
+        EventLocation location = locationRepository.findById(locationId)
+                .orElseThrow(() -> new IllegalArgumentException("Location not found with ID: " + locationId));
+        return EventLocationDTO.fromEventLocation(location);
+    }
+
+    public List<EventLocationDTO> getAllEventLocations() {
+        return locationRepository.findAll().stream()
+                .map(EventLocationDTO::fromEventLocation)
+                .toList();
+    }
+
+    @Transactional
+    public EventLocationDTO updateEventLocation(Integer locationId, EventLocationCreateDTO dto) {
+        EventLocation location = locationRepository.findById(locationId)
+                .orElseThrow(() -> new IllegalArgumentException("Location not found with ID: " + locationId));
+
+        location.setLocation(dto.location);
+        location.setTitle(dto.title);
+        location.setDescription(dto.description);
+        location.setKeywords(dto.keywords);
+        location.setFeatured(dto.featured);
+
+        return EventLocationDTO.fromEventLocation(locationRepository.save(location));
+    }
+
+    public void deleteEventLocation(Integer locationId) {
+        locationRepository.deleteById(locationId);
     }
 
 }
