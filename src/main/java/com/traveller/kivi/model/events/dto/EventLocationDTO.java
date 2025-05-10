@@ -6,13 +6,9 @@ import java.util.Set;
 import com.traveller.kivi.model.events.Coordinate;
 import com.traveller.kivi.model.events.EventLocation;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-@Entity
-@Table
 public class EventLocationDTO {
     public static EventLocationDTO fromEventLocation(EventLocation eventLocation) {
         var dto = new EventLocationDTO();
