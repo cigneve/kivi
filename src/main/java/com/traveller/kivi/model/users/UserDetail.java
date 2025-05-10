@@ -13,6 +13,7 @@ public class UserDetail {
     public String email;
     public String lastName;
     public String firstName;
+    public String username;
     public Integer id;
 
     public static UserDetail fromUser(User user) {
@@ -25,6 +26,7 @@ public class UserDetail {
         userDetail.email = user.getEmail();
         userDetail.userType = user.getUserType();
         userDetail.registrationDate = user.getRegistrationDate();
+        userDetail.username = user.getUsername();
         return userDetail;
     }
 }
