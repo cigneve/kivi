@@ -1,5 +1,7 @@
 package com.traveller.kivi.model.events;
 
+import java.time.LocalDateTime;
+
 import org.hibernate.validator.constraints.Range;
 
 import com.traveller.kivi.model.users.User;
@@ -29,6 +31,17 @@ public class EventRating {
     @NotNull
     @ManyToOne
     private User owner;
+
+    @NotNull
+    private LocalDateTime date;
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
 
     public Integer getId() {
         return id;

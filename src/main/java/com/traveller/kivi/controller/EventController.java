@@ -64,7 +64,7 @@ public class EventController {
      * @return
      */
     @GetMapping("/owned/{userId}")
-    public List<EventDetails> getOwnedEvents(Integer userId) {
+    public List<EventDetails> getOwnedEvents(@PathVariable Integer userId) {
         return eventService.getOwnedEvents(userId);
     }
 
@@ -153,8 +153,14 @@ public class EventController {
     }
 
     @GetMapping("/{eventId}/skeleton")
-    public EventSkeletonDTO getEventSkeleton(@RequestParam Integer eventId) {
+    public EventSkeletonDTO getEventSkeleton(@PathVariable Integer eventId) {
         return eventService.getEventSkeleton(eventId);
+    }
+
+    @GetMapping("/skeleton/{skeletonId}")
+
+    public @Valid EventSkeletonDTO getEventSkeletonById(@PathVariable Integer skeletonId) {
+        return eventService.getEventSkeletonById(skeletonId);
     }
 
     @PostMapping("/locations")
@@ -165,7 +171,7 @@ public class EventController {
     @GetMapping("/locations/{locationId}")
     public ResponseEntity<EventLocationDTO> getEventLocation(@PathVariable Integer locationId) {
         try {
-            EventLocationDTO location = eventService.getEventLocationById(locationId);
+            EventLocationDTO location = eventService.getEventLocationDTOById(locationId);
             return ResponseEntity.ok(location);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();

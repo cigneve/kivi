@@ -28,8 +28,9 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
      * @param attendantId
      * @return
      */
-    @Query("SELECT e FROM Event e JOIN e.attendants at WHERE at.id = :attendantId")
-    List<Event> getByAttendants_Id(Integer attendantId);
+    // @Query("SELECT e FROM Event e JOIN e.attendants at WHERE at.id =
+    // :attendantId")
+    List<Event> findByAttendantsId(Integer attendantId);
 
     /**
      * Number of owned events
@@ -39,5 +40,5 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
      */
     Long countByOwner_Id(Integer ownerId);
 
-    List<Event> getByOwner_Id(Integer ownerId);
+    List<Event> findByOwnerId(Integer ownerId);
 }

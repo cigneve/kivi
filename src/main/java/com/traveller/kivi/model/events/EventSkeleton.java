@@ -8,6 +8,7 @@ import java.util.Set;
 import com.traveller.kivi.model.events.Event.EventType;
 import com.traveller.kivi.model.users.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -51,7 +52,7 @@ public class EventSkeleton {
     @NotEmpty
     private String details;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<EventComment> comments = new ArrayList<>();
 
     public EventSkeleton() {

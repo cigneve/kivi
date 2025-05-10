@@ -1,6 +1,7 @@
 package com.traveller.kivi.model.events.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.traveller.kivi.model.events.EventRating;
 
@@ -14,6 +15,7 @@ public class EventRatingDTO {
         dto.comment = eventRating.getComment();
         dto.eventId = eventRating.getEvent().getId();
         dto.ownerId = eventRating.getOwner().getId();
+        dto.date = eventRating.getDate();
         return dto;
     }
 
@@ -28,5 +30,5 @@ public class EventRatingDTO {
     @NotNull
     public String comment;
     @NotNull
-    public LocalDate date;
+    public LocalDateTime date;
 }

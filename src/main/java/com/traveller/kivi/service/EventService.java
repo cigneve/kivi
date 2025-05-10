@@ -1,5 +1,6 @@
 package com.traveller.kivi.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -180,10 +181,13 @@ public class EventService {
     }
 
     private Event createIndependentEvent(EventCreateDTO dto) {
-        Event event = EventCreateDTO.toEntity(dto, null, new ArrayList<>());
+        User user = userService.getUserById(dto.ownerId);
+        Event event = EventCreateDTO.toEntity(dto, user,
+                dto.locationIds.stream().map(id -> getEventLocationById(id)).toList());
         EventSkeleton skeleton = new EventSkeleton();
-        skeleton.setOwner(userService.getUserById(dto.ownerId));
-        skeleton.setDetails(event.getDetails());
+        skeleton.setOwner(user);
+        skeleton.setDetails(dto.details);
+
         skeleton.setEventType(event.getEventType());
         skeleton.setLocations(event.getLocations());
         eventSkeletonRepository.save(skeleton);
@@ -198,7 +202,7 @@ public class EventService {
      * @return
      */
     public List<EventDetails> getOwnedEvents(Integer userId) {
-        return eventRepository.getByOwner_Id(userId).stream().map(EventDetails::toEventDetails).toList();
+        return eventRepository.findByOwnerId(userId).stream().map(EventDetails::toEventDetails).toList();
     }
 
     public List<EventCommentDTO> getEventChatComments(Integer eventId) {
@@ -215,7 +219,7 @@ public class EventService {
      * @return
      */
     public List<EventDetails> getAttendedEvents(Integer userId) {
-        return eventRepository.getByAttendants_Id(userId).stream().map(EventDetails::toEventDetails).toList();
+        return eventRepository.findByAttendantsId(userId).stream().map(EventDetails::toEventDetails).toList();
     }
 
     public String cancelEvent(Integer eventId) {
@@ -256,6 +260,8 @@ public class EventService {
         dto.setOwner(userService.getUserById(eventRatingCreateDTO.ownerId));
         dto.setComment(eventRatingCreateDTO.comment);
         dto.setRate(eventRatingCreateDTO.rate);
+        dto.setEvent(getEventById(eventId));
+        dto.setDate(LocalDateTime.now());
         return dto;
     }
 
@@ -263,7 +269,6 @@ public class EventService {
         var dto = new EventComment();
         dto.setCommentBody(eventCommentCreateDTO.comment);
         dto.setOwner(userService.getUserById(eventCommentCreateDTO.ownerId));
-        dto.setEvent(getEventById(eventId));
         return dto;
     }
 
@@ -283,10 +288,13 @@ public class EventService {
         return EventLocationDTO.fromEventLocation(savedLocation);
     }
 
-    public EventLocationDTO getEventLocationById(Integer locationId) {
-        EventLocation location = locationRepository.findById(locationId)
+    public EventLocationDTO getEventLocationDTOById(Integer locationId) {
+        return EventLocationDTO.fromEventLocation(getEventLocationById(locationId));
+    }
+
+    public EventLocation getEventLocationById(Integer locationId) {
+        return locationRepository.findById(locationId)
                 .orElseThrow(() -> new IllegalArgumentException("Location not found with ID: " + locationId));
-        return EventLocationDTO.fromEventLocation(location);
     }
 
     public List<EventLocationDTO> getAllEventLocations() {
@@ -311,6 +319,12 @@ public class EventService {
 
     public void deleteEventLocation(Integer locationId) {
         locationRepository.deleteById(locationId);
+    }
+
+    public EventSkeletonDTO getEventSkeletonById(Integer skeletonId) {
+        return EventSkeletonDTO.fromEventSkeleton(eventSkeletonRepository.findById(skeletonId).orElseThrow(() -> {
+            throw new IllegalArgumentException("No such skeleton");
+        }));
     }
 
 }

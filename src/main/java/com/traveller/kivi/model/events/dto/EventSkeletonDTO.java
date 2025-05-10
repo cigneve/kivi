@@ -35,6 +35,6 @@ public class EventSkeletonDTO {
 
     @NotNull
     @NotEmpty
-    private String details;
+    public String details;
 
 }

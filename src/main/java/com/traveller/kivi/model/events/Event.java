@@ -9,6 +9,7 @@ import java.util.Set;
 import com.traveller.kivi.model.Image;
 import com.traveller.kivi.model.users.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -57,7 +58,7 @@ public class Event {
 
     private LocalDate endDate;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<EventRating> ratings = new HashSet<>();
 
     @OneToMany
@@ -78,7 +79,7 @@ public class Event {
     @NotEmpty
     private String details;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<EventComment> chatComments = new ArrayList<>();
 
     @OneToMany

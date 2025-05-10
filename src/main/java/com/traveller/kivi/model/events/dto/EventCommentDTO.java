@@ -14,7 +14,6 @@ public class EventCommentDTO {
     public static EventCommentDTO fromEventComment(EventComment eventComment) {
         var dto = new EventCommentDTO();
         dto.id = eventComment.getId();
-        dto.eventId = eventComment.getEvent().getId();
         dto.ownerId = eventComment.getOwner().getId();
         dto.commentDate = eventComment.getCommentDate();
         dto.commentBody = eventComment.getCommentBody();
@@ -23,9 +22,6 @@ public class EventCommentDTO {
 
     @NotNull
     public Integer id;
-
-    @NotNull
-    public Integer eventId;
 
     @NotNull
     public Integer ownerId;

@@ -80,6 +80,8 @@ public class EventDetails {
         dto.ownerId = event.getOwner().getId();
         dto.name = event.getName();
         dto.details = event.getDetails();
+        dto.commentIds = event.getChatComments().stream().map(comment -> comment.getId()).toList();
+        dto.skeletonId = event.getSkeleton().getId();
         return dto;
     }
 }

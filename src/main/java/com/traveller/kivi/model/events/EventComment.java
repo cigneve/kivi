@@ -22,9 +22,6 @@ public class EventComment {
     @GeneratedValue
     private Integer id;
 
-    @ManyToOne
-    private Event event;
-
     @NotNull
     @ManyToOne
     private User owner;
@@ -47,14 +44,6 @@ public class EventComment {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
     }
 
     public User getOwner() {

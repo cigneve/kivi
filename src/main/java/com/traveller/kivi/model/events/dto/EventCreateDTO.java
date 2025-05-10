@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.traveller.kivi.model.events.Event;
 import com.traveller.kivi.model.events.Event.EventType;
+import com.traveller.kivi.model.events.Event.Status;
 import com.traveller.kivi.model.events.EventLocation;
 import com.traveller.kivi.model.users.User;
 
@@ -35,6 +36,7 @@ public class EventCreateDTO {
         e.setStartDate(dto.startDate);
         e.setEndDate(dto.endDate);
         e.setLocations(locations);
+        e.setStatus(Status.SCHEDULED);
         return e;
     }
 

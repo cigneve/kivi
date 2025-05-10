@@ -1,6 +1,6 @@
 package com.traveller.kivi.model.users;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -66,7 +67,7 @@ public class User {
     @NotNull
     private UserType userType;
 
-    private LocalDate registrationDate;
+    private LocalDateTime registrationDate;
 
     @JsonIgnore
     @ManyToOne
@@ -75,8 +76,9 @@ public class User {
     @JsonIgnore
     private Set<String> languages = new HashSet<>();
 
+    @PrePersist
     protected void onCreate() {
-        this.registrationDate = LocalDate.now();
+        this.registrationDate = LocalDateTime.now();
     }
 
     public Set<String> getLanguages() {
@@ -114,7 +116,7 @@ public class User {
         return lastName;
     }
 
-    public LocalDate getRegistrationDate() {
+    public LocalDateTime getRegistrationDate() {
         return registrationDate;
     }
 
@@ -158,7 +160,7 @@ public class User {
         this.userType = userType;
     }
 
-    public void setRegistrationDate(LocalDate registrationDate) {
+    public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
     }
 

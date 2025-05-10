@@ -10,8 +10,12 @@ public final class Coordinate {
     @GeneratedValue
     private Integer id;
 
-    public final double latitude;
-    public final double longtitude;
+    public double latitude;
+    public double longtitude;
+
+    public Coordinate() {
+
+    }
 
     public Coordinate(double latitude, double longtitude) {
         this.latitude = latitude;

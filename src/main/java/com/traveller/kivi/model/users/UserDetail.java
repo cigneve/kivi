@@ -1,6 +1,6 @@
 package com.traveller.kivi.model.users;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,7 +8,7 @@ import com.traveller.kivi.model.users.User.UserType;
 
 public class UserDetail {
     public Set<String> languages = new HashSet<>();
-    public LocalDate registrationDate;
+    public LocalDateTime registrationDate;
     public UserType userType;
     public String email;
     public String lastName;
