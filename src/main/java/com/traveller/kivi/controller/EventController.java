@@ -29,11 +29,8 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/events")
 public class EventController {
 
-    private final EventService eventService;
-
-    public EventController(EventService eventService) {
-        this.eventService = eventService;
-    }
+    @Autowired
+    private EventService eventService;
 
     /** Creates a new Event from DTO and returns EventDetails */
     @PostMapping

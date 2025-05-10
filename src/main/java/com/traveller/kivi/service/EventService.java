@@ -14,7 +14,6 @@ import com.traveller.kivi.model.events.EventLocation;
 import com.traveller.kivi.model.events.dto.EventCommentDTO;
 import com.traveller.kivi.model.events.dto.EventCreateDTO;
 import com.traveller.kivi.model.events.dto.EventDetails;
-import com.traveller.kivi.model.events.dto.EventMapper;
 import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.repository.EventLocationRepository;
 import com.traveller.kivi.repository.EventRepository;
@@ -87,15 +86,15 @@ public class EventService {
     /** New: DTO-based create flow */
     @Transactional
     public EventDetails createEventFromDTO(EventCreateDTO dto) {
-        User owner = userRepository.findById(dto.getOwnerId())
-                .orElseThrow(() -> new IllegalArgumentException("Owner not found: " + dto.getOwnerId()));
+        User owner = userRepository.findById(dto.ownerId)
+                .orElseThrow(() -> new IllegalArgumentException("Owner not found: " + dto.ownerId));
 
-        List<EventLocation> locs = dto.getLocationIds().stream()
+        List<EventLocation> locs = dto.locationIds.stream()
                 .map(id -> locationRepository.findById(id)
                         .orElseThrow(() -> new IllegalArgumentException("Location not found: " + id)))
                 .collect(Collectors.toList());
 
-        Event ev = EventMapper.toEntity(dto, owner, locs);
+        Event ev = EventCreateDTO.toEntity(dto, owner, locs);
         return createEvent(ev);
     }
 
