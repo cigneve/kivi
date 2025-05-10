@@ -50,10 +50,10 @@ public class ImageService {
         return new InputStreamResource(getImageContent(image));
     }
 
-    public Image createImage(String stream) {
+    public Image createImage(InputStream stream) {
         Image image = new Image(UUID.randomUUID().toString());
         imageRepository.save(image);
-        imageStore.setContent(image, new ByteArrayInputStream(stream.getBytes()));
+        imageStore.setContent(image, stream);
         return image;
     }
 
