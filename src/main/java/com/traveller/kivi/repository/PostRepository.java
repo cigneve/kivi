@@ -26,4 +26,10 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
      */
     @Query("SELECT COUNT(l) FROM Post p JOIN p.likers l WHERE p.owner.id = :ownerId")
     Long countLikesByOwner_Id(@Param("ownerId") Integer ownerId);
+
+    /**
+     * Returns the number of images uploaded by the user in all their posts.
+     */
+    @Query("SELECT COUNT(img) FROM Post p JOIN p.images img WHERE p.owner.id = :ownerId")
+    Long countImagesByOwner_Id(@Param("ownerId") Integer ownerId);
 }
