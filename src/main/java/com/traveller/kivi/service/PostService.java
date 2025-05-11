@@ -167,6 +167,16 @@ public class PostService {
         // Check if the user has already liked the post
         if (!post.getLikers().contains(user)) {
             post.getLikers().add(user);
+            postRepository.save(post);
+            
+            // Trigger LIKE_RECEIVE criterion 
+            Integer ownerId = post.getOwner().getId();
+            Long totalLikes =postRepository.countLikesByOwner_Id(ownerId);  
+            achievementService.checkAndAward(
+                ownerId,
+                CriterionType.LIKE_RECEIVE.name(),
+                totalLikes
+            );
         }
         return PostDetail.toPostDetail(post);
     }
@@ -178,6 +188,9 @@ public class PostService {
         // Check if the user has already liked the post
         if (post.getLikers().contains(user)) {
             post.getLikers().remove(user);
+
+            // kanka burada achievementi geri çekmedim 
+            postRepository.save(post);
         }
 
         return PostDetail.toPostDetail(post);
