@@ -162,6 +162,15 @@ public class EventService {
         if (!event.getAttendants().contains(user)) {
             event.getAttendants().add(user);
             eventRepository.save(event);
+
+            //  Achievement control for EVENT_JOIN criteria 
+        Long totalJoins = eventRepository.countByAttendants_Id(userId); 
+        achievementService.checkAndAward(
+            userId,
+            CriterionType.EVENT_JOIN.name(),
+            totalJoins     
+        );
+
         }
         return EventDetails.toEventDetails(event);
     }
