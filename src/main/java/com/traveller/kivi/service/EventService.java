@@ -31,7 +31,7 @@ import com.traveller.kivi.repository.EventLocationRepository;
 import com.traveller.kivi.repository.EventRepository;
 import com.traveller.kivi.repository.EventSkeletonRepository;
 import com.traveller.kivi.repository.UserRepository;
-import com.traveller.kivi.repository.EventCommentRepository;
+import com.traveller.kivi.repository.EventCommentRepository; 
 
 import jakarta.transaction.Transactional;
 
@@ -56,7 +56,7 @@ public class EventService {
     private ImageService imageService;
 
     @Autowired
-    private EventCommentRepository commentRepository;
+    private EventCommentRepository commentRepository;  
 
     /**
      * Retrieves all events.
