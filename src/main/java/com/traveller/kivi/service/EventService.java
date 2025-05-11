@@ -30,6 +30,7 @@ import com.traveller.kivi.repository.EventLocationRepository;
 import com.traveller.kivi.repository.EventRepository;
 import com.traveller.kivi.repository.EventSkeletonRepository;
 import com.traveller.kivi.repository.UserRepository;
+import com.traveller.kivi.repository.EventCommentRepository; 
 
 import jakarta.transaction.Transactional;
 
@@ -50,6 +51,9 @@ public class EventService {
     private AchievementService achievementService;
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EventCommentRepository commentRepository;  
 
     /**
      * Retrieves all events.
@@ -233,6 +237,16 @@ public class EventService {
         EventComment comment = toEventComment(eventId, commentDTO);
         event.getChatComments().add(comment);
         eventRepository.save(event);
+
+        //  Achievement control for COMMENT_WRITE criteria  
+        Integer ownerId = comment.getOwner().getId();
+        long totalComments = commentRepository.countByOwner_Id(ownerId);
+        achievementService.checkAndAward(
+            ownerId,
+            CriterionType.COMMENT_WRITE.name(),
+            totalComments
+        );
+
         return EventCommentDTO.fromEventComment(comment);
     }
 
@@ -252,6 +266,16 @@ public class EventService {
         EventSkeleton skeleton = event.getSkeleton();
         skeleton.getComments().add(comment);
         eventSkeletonRepository.save(skeleton);
+
+        //  Achievement control for COMMENT_WRITE criteria  
+        Integer ownerId =comment.getOwner().getId();
+        long totalComments =commentRepository.countByOwner_Id(ownerId);
+        achievementService.checkAndAward(
+            ownerId,
+            CriterionType.COMMENT_WRITE.name(),
+            totalComments
+        );
+
         return EventCommentDTO.fromEventComment(comment);
     }
 
