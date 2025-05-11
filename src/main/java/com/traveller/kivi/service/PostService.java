@@ -41,11 +41,21 @@ public class PostService {
 
     public Post createPost(Post post) {
         Post saved = postRepository.save(post);
+
         Long totalPosts = postRepository.countByOwner_Id(post.getOwner().getId());
         achievementService.checkAndAward(
                 post.getOwner().getId(),
                 CriterionType.POST_CREATE.name(),
-                totalPosts);
+                totalPosts
+        );
+
+        //  IMAGE_UPLOAD criteria
+        Long totalUploads = postRepository.countImagesByOwner_Id(saved.getOwner().getId());
+        achievementService.checkAndAward(
+            saved.getOwner().getId(),
+            CriterionType.IMAGE_UPLOAD.name(),
+            totalUploads
+        );
 
         return saved;
     }
