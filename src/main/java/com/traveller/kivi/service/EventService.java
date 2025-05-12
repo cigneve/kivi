@@ -30,7 +30,7 @@ import com.traveller.kivi.repository.EventLocationRepository;
 import com.traveller.kivi.repository.EventRepository;
 import com.traveller.kivi.repository.EventSkeletonRepository;
 import com.traveller.kivi.repository.UserRepository;
-import com.traveller.kivi.repository.EventCommentRepository; 
+import com.traveller.kivi.repository.EventCommentRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -53,7 +53,7 @@ public class EventService {
     private UserService userService;
 
     @Autowired
-    private EventCommentRepository commentRepository;  
+    private EventCommentRepository commentRepository;
 
     /**
      * Retrieves all events.
@@ -101,10 +101,7 @@ public class EventService {
     public EventDetails createEventFromDTO(EventCreateDTO dto) {
         User owner = userService.getUserById(dto.ownerId);
 
-        List<EventLocation> locs = dto.locationIds.stream()
-                .map(id -> locationRepository.findById(id)
-                        .orElseThrow(() -> new IllegalArgumentException("Location not found: " + id)))
-                .toList();
+        List<EventLocation> locs = createLocationsFromDTO(dto);
 
         Event ev = EventCreateDTO.toEntity(dto, owner, locs);
         return createEvent(ev);
@@ -163,13 +160,12 @@ public class EventService {
             event.getAttendants().add(user);
             eventRepository.save(event);
 
-            //  Achievement control for EVENT_JOIN criteria 
-        Long totalJoins = eventRepository.countByAttendants_Id(userId); 
-        achievementService.checkAndAward(
-            userId,
-            CriterionType.EVENT_JOIN.name(),
-            totalJoins     
-        );
+            // Achievement control for EVENT_JOIN criteria
+            Long totalJoins = eventRepository.countByAttendants_Id(userId);
+            achievementService.checkAndAward(
+                    userId,
+                    CriterionType.EVENT_JOIN.name(),
+                    totalJoins);
 
         }
         return EventDetails.toEventDetails(event);
@@ -196,7 +192,7 @@ public class EventService {
     private Event createIndependentEvent(EventCreateDTO dto) {
         User user = userService.getUserById(dto.ownerId);
         Event event = EventCreateDTO.toEntity(dto, user,
-                dto.locationIds.stream().map(id -> getEventLocationById(id)).toList());
+                createLocationsFromDTO(dto));
         EventSkeleton skeleton = new EventSkeleton();
         skeleton.setOwner(user);
         skeleton.setDetails(dto.details);
@@ -206,6 +202,11 @@ public class EventService {
         eventSkeletonRepository.save(skeleton);
         event.setSkeleton(skeleton);
         return eventRepository.save(event);
+    }
+
+    private List<EventLocation> createLocationsFromDTO(EventCreateDTO dto) {
+        return dto.locations.stream().map(locationdto -> getEventLocationById(createEventLocation(locationdto).id))
+                .toList();
     }
 
     /**
@@ -247,14 +248,13 @@ public class EventService {
         event.getChatComments().add(comment);
         eventRepository.save(event);
 
-        //  Achievement control for COMMENT_WRITE criteria  
+        // Achievement control for COMMENT_WRITE criteria
         Integer ownerId = comment.getOwner().getId();
         long totalComments = commentRepository.countByOwner_Id(ownerId);
         achievementService.checkAndAward(
-            ownerId,
-            CriterionType.COMMENT_WRITE.name(),
-            totalComments
-        );
+                ownerId,
+                CriterionType.COMMENT_WRITE.name(),
+                totalComments);
 
         return EventCommentDTO.fromEventComment(comment);
     }
@@ -276,14 +276,13 @@ public class EventService {
         skeleton.getComments().add(comment);
         eventSkeletonRepository.save(skeleton);
 
-        //  Achievement control for COMMENT_WRITE criteria  
-        Integer ownerId =comment.getOwner().getId();
-        long totalComments =commentRepository.countByOwner_Id(ownerId);
+        // Achievement control for COMMENT_WRITE criteria
+        Integer ownerId = comment.getOwner().getId();
+        long totalComments = commentRepository.countByOwner_Id(ownerId);
         achievementService.checkAndAward(
-            ownerId,
-            CriterionType.COMMENT_WRITE.name(),
-            totalComments
-        );
+                ownerId,
+                CriterionType.COMMENT_WRITE.name(),
+                totalComments);
 
         return EventCommentDTO.fromEventComment(comment);
     }
