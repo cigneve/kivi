@@ -9,6 +9,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.traveller.exception.PostNotFoundException;
@@ -23,6 +24,7 @@ import com.traveller.kivi.repository.PostRepository;
 import com.traveller.kivi.repository.PostTagRepository;
 
 @Service
+@Transactional
 public class PostService {
     @Autowired
     private UserService userService;
@@ -183,6 +185,10 @@ public class PostService {
     public Resource getPostImage(Integer postId) {
         Post post = getPostById(postId);
         return imageService.getImageContentAsResource(post.getImage());
+    }
+
+    public List<PostDetail> getAllPosts() {
+        return postRepository.findAll().stream().map(PostDetail::toPostDetail).collect(Collectors.toList());
     }
 
 }

@@ -67,6 +67,11 @@ public class PostController {
         return postService.getPostsOfUser(userId);
     }
 
+    @GetMapping("/all")
+    public List<PostDetail> getAllPosts() {
+        return postService.getAllPosts();
+    }
+
     @PostMapping("/updatetags/{postId}")
     public PostDetail updatePostTags(@PathVariable Integer postId, @RequestBody List<String> tags) {
         return postService.updatePostTags(postId, tags);

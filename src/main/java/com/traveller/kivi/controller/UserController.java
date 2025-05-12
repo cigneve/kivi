@@ -139,6 +139,16 @@ public class UserController {
         return userService.isPasswordCorrect(userId, password);
     }
 
+    @PostMapping("/{userId}/resetPassword")
+    public UserDetail resetPassword(@PathVariable Integer userId) {
+        return userService.resetPassword(userId);
+    }
+
+    @GetMapping("/byEmail/{email}")
+    public UserDetail getUserByEmail(@RequestParam String email) {
+        return userService.getUserByEmail(email);
+    }
+
     @GetMapping("/nuke")
     public boolean removeAll() {
 

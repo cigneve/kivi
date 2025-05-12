@@ -149,4 +149,21 @@ public class UserService {
         User user = getUserById(userId);
         return user.getPassword().equals(password);
     }
+
+    public UserDetail getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UserNotFoundException("User with email " + email + " not found");
+        }
+        return UserDetail.fromUser(user);
+    }
+
+    public UserDetail resetPassword(Integer userId) {
+        User user = getUserById(userId);
+        // TODO: Email
+        throw new UnsupportedOperationException();
+        // user.setPassword(password);
+        // userRepository.save(user);
+        // return UserDetail.fromUser(user);
+    }
 }
