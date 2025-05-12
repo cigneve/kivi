@@ -66,10 +66,14 @@ public class EventCreateDTO {
 
    
 
+
+   
+
     /**
      * null if it is newly created
      */
     public Integer skeletonId;
 
     public List<EventLocationCreateDTO> locations = new ArrayList<>();
+
 }
