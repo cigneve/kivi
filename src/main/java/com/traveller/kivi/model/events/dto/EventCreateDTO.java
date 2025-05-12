@@ -37,6 +37,7 @@ public class EventCreateDTO {
         e.setEndDate(dto.endDate);
         e.setLocations(locations);
         e.setStatus(Status.SCHEDULED);
+        e.setLanguage(dto.language);
         return e;
     }
 
@@ -57,6 +58,10 @@ public class EventCreateDTO {
 
     @NotNull
     public LocalDate endDate;
+
+    @NotNull
+    @NotBlank
+    public String language;
 
     /**
      * null if it is newly created

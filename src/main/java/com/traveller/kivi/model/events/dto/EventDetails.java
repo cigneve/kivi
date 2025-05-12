@@ -62,6 +62,13 @@ public class EventDetails {
     public String details;
 
     @NotNull
+    @NotEmpty
+    public String language;
+
+    @NotNull
+    public Integer rating;
+
+    @NotNull
     public List<Integer> commentIds = new ArrayList<>();
 
     public Integer skeletonId;
@@ -82,6 +89,12 @@ public class EventDetails {
         dto.details = event.getDetails();
         dto.commentIds = event.getChatComments().stream().map(comment -> comment.getId()).toList();
         dto.skeletonId = event.getSkeleton().getId();
+        dto.language = event.getLanguage();
+        dto.rating = dto.rating = (int) Math.round(event.getRatings().stream()
+                .mapToInt(EventRating::getRate)
+                .average()
+                .orElse(0));
+        ;
         return dto;
     }
 }

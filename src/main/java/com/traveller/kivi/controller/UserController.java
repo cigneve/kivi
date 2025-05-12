@@ -103,10 +103,10 @@ public class UserController {
      * @return
      */
     @PostMapping(path = "/{userId}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public UserDetail setUserProfilePhoto(@PathVariable Integer userId, @RequestParam("file") MultipartFile file) {
+    public UserDetail setUserProfilePhoto(@PathVariable Integer userId, @RequestParam("image") MultipartFile image) {
         Resource res;
         try {
-            res = new InputStreamResource(file.getInputStream());
+            res = new InputStreamResource(image.getInputStream());
         } catch (IOException e) {
             throw new RuntimeException("Error getting avatar of User with id: " + userId);
         }

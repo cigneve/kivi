@@ -1,13 +1,14 @@
 package com.traveller.kivi.service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.traveller.exception.EventNotFoundException;
 import com.traveller.kivi.model.achievements.CriterionType;
@@ -50,6 +51,8 @@ public class EventService {
     private AchievementService achievementService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ImageService imageService;
 
     /**
      * Retrieves all events.
@@ -325,6 +328,17 @@ public class EventService {
         return EventSkeletonDTO.fromEventSkeleton(eventSkeletonRepository.findById(skeletonId).orElseThrow(() -> {
             throw new IllegalArgumentException("No such skeleton");
         }));
+    }
+
+    public EventDetails setEventPhoto(Integer eventId, Resource res) {
+        Event event = getEventById(eventId);
+        imageService.setImageContent(event.getImage(), res);
+        return EventDetails.toEventDetails(event);
+    }
+
+    public Resource getEventPhoto(Integer eventId) {
+        Event event = getEventById(eventId);
+        return imageService.getImageContentAsResource(event.getImage());
     }
 
 }

@@ -20,6 +20,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -79,11 +80,15 @@ public class Event {
     @NotEmpty
     private String details;
 
+    @NotNull
+    @NotEmpty
+    private String language;
+
     @OneToMany(cascade = CascadeType.ALL)
     private List<EventComment> chatComments = new ArrayList<>();
 
-    @OneToMany
-    private List<Image> gallery = new ArrayList<>();
+    @OneToOne
+    private Image image;
 
     @ManyToOne
     @NotNull
@@ -92,9 +97,12 @@ public class Event {
     public Event() {
     }
 
-    @PrePersist
-    protected void onCreate() {
-        this.created = LocalDate.now();
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     public Integer getId() {
@@ -201,20 +209,25 @@ public class Event {
         this.chatComments = chatComments;
     }
 
-    public List<Image> getGallery() {
-        return gallery;
-    }
-
-    public void setGallery(List<Image> gallery) {
-        this.gallery = gallery;
-    }
-
     public EventSkeleton getSkeleton() {
         return skeleton;
     }
 
     public void setSkeleton(EventSkeleton skeleton) {
         this.skeleton = skeleton;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.created = LocalDate.now();
     }
 
 }
