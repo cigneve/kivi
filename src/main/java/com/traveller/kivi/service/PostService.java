@@ -49,16 +49,14 @@ public class PostService {
         achievementService.checkAndAward(
                 post.getOwner().getId(),
                 CriterionType.POST_CREATE.name(),
-                totalPosts
-        );
+                totalPosts);
 
-        //  IMAGE_UPLOAD criteria
-        Long totalUploads = postRepository.countImagesByOwner_Id(saved.getOwner().getId());
+        // IMAGE_UPLOAD criteria
+        Long totalUploads = postRepository.countPostsByOwner_Id(saved.getOwner().getId());
         achievementService.checkAndAward(
-            saved.getOwner().getId(),
-            CriterionType.IMAGE_UPLOAD.name(),
-            totalUploads
-        );
+                saved.getOwner().getId(),
+                CriterionType.IMAGE_UPLOAD.name(),
+                totalUploads);
 
         return saved;
     }
@@ -178,15 +176,14 @@ public class PostService {
         if (!post.getLikers().contains(user)) {
             post.getLikers().add(user);
             postRepository.save(post);
-            
-            // Trigger LIKE_RECEIVE criterion 
+
+            // Trigger LIKE_RECEIVE criterion
             Integer ownerId = post.getOwner().getId();
-            Long totalLikes =postRepository.countLikesByOwner_Id(ownerId);  
+            Long totalLikes = postRepository.countLikesByOwner_Id(ownerId);
             achievementService.checkAndAward(
-                ownerId,
-                CriterionType.LIKE_RECEIVE.name(),
-                totalLikes
-            );
+                    ownerId,
+                    CriterionType.LIKE_RECEIVE.name(),
+                    totalLikes);
         }
         return PostDetail.toPostDetail(post);
     }
@@ -199,7 +196,7 @@ public class PostService {
         if (post.getLikers().contains(user)) {
             post.getLikers().remove(user);
 
-            // kanka burada achievementi geri çekmedim 
+            // kanka burada achievementi geri çekmedim
             postRepository.save(post);
         }
 

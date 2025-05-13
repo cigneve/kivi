@@ -419,4 +419,19 @@ public class EventService {
         return imageService.getImageContentAsResource(event.getImage());
     }
 
+    public List<EventDetails> getUpcomingEventsByAttendant(Integer attendantId) {
+        LocalDateTime now = LocalDateTime.now();
+
+        // Get all events attended by the user
+        List<Event> attendedEvents = eventRepository.findByAttendantsId(attendantId);
+
+        // Filter out events that have already ended
+        return attendedEvents.stream()
+                .filter(event -> {
+                    LocalDateTime endTime = event.getStartDate().plusMinutes(event.getDuration());
+                    return endTime.isAfter(now);
+                }).map(EventDetails::toEventDetails)
+                .toList();
+    }
+
 }
