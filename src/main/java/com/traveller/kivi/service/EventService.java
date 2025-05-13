@@ -61,25 +61,26 @@ public class EventService {
     @Autowired
     private EmailService emailService;
 
-/**
+    /**
      * Find events by location name (case-insensitive, contains match).
      * 
      * @param locationName the name of the location to search for
      * @return a list of events matching the location name
      */
-    public List<Event> getEventsByLocationName(String locationName) {
-        return eventRepository.findByLocations_NameContaining(locationName);
+    public List<EventDetails> getEventsByLocationName(String locationName) {
+        return eventRepository.findByLocations_NameContaining(locationName).stream().map(EventDetails::toEventDetails)
+                .toList();
     }
- /**
+
+    /**
      * Find events by owner name (case-insensitive, contains match).
      * 
      * @param ownerName the name of the owner to search for
      * @return a list of events matching the owner name
      */
-    public List<Event> getEventsByOwnerName(String ownerName) {
-        return eventRepository.findByOwnerNameContaining(ownerName);
+    public List<EventDetails> getEventsByOwnerName(String ownerName) {
+        return eventRepository.findByOwnerNameContaining(ownerName).stream().map(EventDetails::toEventDetails).toList();
     }
-
 
     /**
      * Retrieves all events.

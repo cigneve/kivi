@@ -54,18 +54,15 @@ public class EventController {
         return new PagedModel<>(eventService.getPaginatedEvents(pageable));
     }
 
-
     @GetMapping("/by-location")
-    public List<Event> getEventsByLocation(@RequestParam String locationName) {
+    public List<EventDetails> getEventsByLocation(@RequestParam String locationName) {
         return eventService.getEventsByLocationName(locationName);
     }
 
     @GetMapping("/by-owner")
-    public List<Event> getEventsByOwner(@RequestParam String ownerName) {
+    public List<EventDetails> getEventsByOwner(@RequestParam String ownerName) {
         return eventService.getEventsByOwnerName(ownerName);
     }
-
-
 
     /**
      * Returns the list of all events.
