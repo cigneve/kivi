@@ -32,4 +32,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
      */
     @Query("SELECT COUNT(u) FROM User u JOIN u.following f WHERE u.id = :userId")
     Long countByFollowing(@Param("userId") Integer userId);
+
+    User findByEmail(String email);
 }
