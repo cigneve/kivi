@@ -27,12 +27,24 @@ public class Achievement {
     @Column(nullable = false)
     private Integer threshold;   // e.g. 1, 5, 10…
 
-    public Achievement(String code, String name, String description, String criterion, Integer threshold) {
+    @Column(nullable = false)
+    private String badgeImageUrl;
+
+    public Achievement(String code, String name, String description, String criterion, Integer threshold, String badgeImageUrl) {
         this.code = code;
         this.name = name;
         this.description = description;
         this.criterion = criterion;
         this.threshold = threshold;
+        this.badgeImageUrl= badgeImageUrl;
+    }
+
+    public String getBadgeImageUrl() {
+        return badgeImageUrl;
+    }
+
+    public void setBadgeImageUrl(String badgeImageUrl) {
+        this.badgeImageUrl = badgeImageUrl;
     }
 
     public Integer getId() { 

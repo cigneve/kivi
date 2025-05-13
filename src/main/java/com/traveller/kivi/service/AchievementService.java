@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import com.traveller.kivi.model.achievements.Achievement;
+import com.traveller.kivi.model.achievements.CriterionType;
 import com.traveller.kivi.model.achievements.UserAchievement;
 import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.repository.AchievementRepository;
@@ -36,6 +37,10 @@ public class AchievementService {
         for (Achievement a : list) {
             if (currentCount >= a.getThreshold()
                     && !userAchievementRepository.existsByUserAndAchievement(user, a)) {
+                // Set the badge image URL from CriterionType
+                CriterionType criterionType = CriterionType.valueOf(criterion);
+                a.setBadgeImageUrl(criterionType.getBadgeImageUrl());
+
                 UserAchievement userAchievement = new UserAchievement(user, a, LocalDateTime.now());
                 userAchievementRepository.save(userAchievement);
             }

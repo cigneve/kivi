@@ -56,5 +56,9 @@ public class UserAchievement {
     public void setAwardedAt(LocalDateTime awardedAt) { 
         this.awardedAt = awardedAt; 
     }
+
+    public String getBadgeImageUrl() {
+        return achievement.getBadgeImageUrl();
+    }
     
 }
