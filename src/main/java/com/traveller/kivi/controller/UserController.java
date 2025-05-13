@@ -150,7 +150,7 @@ public class UserController {
         return userService.updateUser(userId, userUpdate);
     }
 
-    @GetMapping("/byEmail/{email}")
+    @GetMapping("/byEmail")
     public UserDetail getUserByEmail(@RequestParam String email) {
         return userService.getUserByEmail(email);
     }

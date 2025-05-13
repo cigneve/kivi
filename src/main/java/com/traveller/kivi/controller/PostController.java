@@ -55,11 +55,11 @@ public class PostController {
     }
 
     @GetMapping("/feed")
-    public PagedModel<PostDetail> getPaginatedPosts(Pageable pageable, @RequestParam(required = false) Integer userId) {
+    public List<PostDetail> getPaginatedPosts(@RequestParam(required = false) Integer userId) {
         if (userId == null) {
-            return new PagedModel<>(postService.getAllPosts(pageable));
+            return postService.getAllPosts();
         } else {
-            return new PagedModel<>(postService.getPostsOfOthers(pageable, userId));
+            return postService.getPostsOfOthers(userId);
         }
     }
 

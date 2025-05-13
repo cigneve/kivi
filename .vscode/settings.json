@@ -6,7 +6,8 @@
         "flake",
         "spring",
         "Event",
-        "Post"
+        "Post",
+        "Image"
     ],
     "maven.view": "hierarchical",
     "java.format.settings.url": "eclipse-formatter.xml"

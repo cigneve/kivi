@@ -100,9 +100,9 @@ public class PostService {
      * @param userId
      * @return
      */
-    public Page<PostDetail> getPostsOfOthers(Pageable pageable, Integer userId) {
+    public List<PostDetail> getPostsOfOthers(Integer userId) {
         User user = userService.getUserById(userId);
-        return postRepository.findByOwnerNot(pageable, user).map(PostDetail::toPostDetail);
+        return postRepository.findByOwnerNot(user).stream().map(PostDetail::toPostDetail).toList();
     }
 
     public List<PostDetail> getPostsOfUser(Integer userId) {
