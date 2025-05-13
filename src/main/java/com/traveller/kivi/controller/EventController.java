@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.traveller.kivi.model.events.Event;
 import com.traveller.kivi.model.events.dto.EventCommentCreateDTO;
 import com.traveller.kivi.model.events.dto.EventCommentDTO;
 import com.traveller.kivi.model.events.dto.EventCreateDTO;
@@ -48,6 +49,19 @@ public class EventController {
     public PagedModel<EventDetails> getPaginatedEvents(Pageable pageable) {
         return new PagedModel<>(eventService.getPaginatedEvents(pageable));
     }
+
+
+    @GetMapping("/by-location")
+    public List<Event> getEventsByLocation(@RequestParam String locationName) {
+        return eventService.getEventsByLocationName(locationName);
+    }
+
+    @GetMapping("/by-owner")
+    public List<Event> getEventsByOwner(@RequestParam String ownerName) {
+        return eventService.getEventsByOwnerName(ownerName);
+    }
+
+
 
     /**
      * Returns the list of all events.
