@@ -1,6 +1,7 @@
 package com.traveller.kivi.service;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,6 +33,8 @@ public class UserService {
 
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private EmailService emailService;
 
     public User createUser(@Valid User user) {
         if (user.getProfilePicture() == null) {
@@ -158,12 +161,45 @@ public class UserService {
         return UserDetail.fromUser(user);
     }
 
+    // Helper method to generate a random password
+    private String generateRandomPassword() {
+        // Generate a random string of 10 characters
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 10; i++) {
+            int index = random.nextInt(chars.length());
+            sb.append(chars.charAt(index));
+        }
+        return sb.toString();
+    }
+
     public UserDetail resetPassword(Integer userId) {
         User user = getUserById(userId);
-        // TODO: Email
-        throw new UnsupportedOperationException();
-        // user.setPassword(password);
-        // userRepository.save(user);
-        // return UserDetail.fromUser(user);
+        String newPassword = generateRandomPassword();
+
+        // Update the user's password
+        user.setPassword(newPassword);
+        userRepository.save(user);
+
+        // Send email with the new password
+        String emailSubject = "Kivi - Your Password Has Been Reset";
+        String emailBody = String.format(
+                "Hello %s,\n\n" +
+                        "Your password has been reset. Your new password is: %s\n\n" +
+                        "Please login and change your password as soon as possible.\n\n" +
+                        "Regards,\n" +
+                        "The Kivi Team",
+                user.getFirstName(),
+                newPassword);
+
+        try {
+            emailService.sendSimpleMessage(user.getEmail(), emailSubject, emailBody);
+        } catch (Exception e) {
+            // Log the error but don't prevent password reset
+            System.err.println("Failed to send password reset email: " + e.getMessage());
+        }
+
+        return UserDetail.fromUser(user);
     }
 }
