@@ -141,17 +141,17 @@ public class EventService {
         Event existing = getEventById(eventId);
         if (updated.name != null) {
             existing.setName(updated.name);
-             emailService.notifyEventNameChanged(existing);
+            emailService.notifyEventNameChanged(existing);
         }
         if (updated.details != null) {
             existing.setDetails(updated.details);
             emailService.notifyEventDetailsChanged(existing);
         }
         if (updated.eventType != null) {
-            existing.setEventType(updated.eventType);   
+            existing.setEventType(updated.eventType);
             emailService.notifyEventTypeChanged(existing);
         }
-            
+
         if (updated.startDate != null) {
             existing.setStartDate(updated.startDate);
             emailService.notifyEventDateChanged(existing);
@@ -160,10 +160,10 @@ public class EventService {
             if (updated.duration < 0) {
                 throw new IllegalArgumentException("Duration cannot be negative");
             }
-                existing.setDuration(updated.duration);
-                emailService.notifyEventDurationChanged(existing);
+            existing.setDuration(updated.duration);
+            emailService.notifyEventDurationChanged(existing);
         }
-        if(updated.language != null) {
+        if (updated.language != null) {
             existing.setLanguage(updated.language);
             emailService.notifyEventLanguageChanged(existing);
         }
