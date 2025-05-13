@@ -31,3 +31,5 @@ build/
 
 ### Direnv ###
 .direnv/
+
+.env

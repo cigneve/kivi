@@ -13,7 +13,11 @@ public class EmailService {
 
     public void sendSimpleMessage(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("noreply@kivi.com");
+        String getenv = System.getenv("SPRING_MAIL_USERNAME");
+        if (getenv == null) {
+            throw new RuntimeException("Environment variable SPRING_MAIL_USERNAME is not set");
+        }
+        message.setFrom(getenv);
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
