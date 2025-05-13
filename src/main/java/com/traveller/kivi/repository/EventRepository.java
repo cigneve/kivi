@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import com.traveller.kivi.model.events.Event;
 import com.traveller.kivi.model.events.dto.EventDetails;
+import com.traveller.kivi.model.events.EventLocation;
+
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Integer> {
@@ -41,4 +43,11 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     Long countByOwner_Id(Integer ownerId);
 
     List<Event> findByOwnerId(Integer ownerId);
+
+    @Query("SELECT e FROM Event e JOIN e.locations l WHERE LOWER(l.name) LIKE LOWER(CONCAT('%', :name, '%'))")
+    List<Event> findByLocations_NameContaining(String name);
+
+    @Query("SELECT e FROM Event e WHERE LOWER(e.owner.name) LIKE LOWER(CONCAT('%', :name, '%'))")
+    List<Event> findByOwnerNameContaining(String name);
+    
 }

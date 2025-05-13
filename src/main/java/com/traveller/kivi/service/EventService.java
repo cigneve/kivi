@@ -58,6 +58,26 @@ public class EventService {
     @Autowired
     private EventCommentRepository commentRepository;
 
+/**
+     * Find events by location name (case-insensitive, contains match).
+     * 
+     * @param locationName the name of the location to search for
+     * @return a list of events matching the location name
+     */
+    public List<Event> getEventsByLocationName(String locationName) {
+        return eventRepository.findByLocations_NameContaining(locationName);
+    }
+ /**
+     * Find events by owner name (case-insensitive, contains match).
+     * 
+     * @param ownerName the name of the owner to search for
+     * @return a list of events matching the owner name
+     */
+    public List<Event> getEventsByOwnerName(String ownerName) {
+        return eventRepository.findByOwnerNameContaining(ownerName);
+    }
+
+
     /**
      * Retrieves all events.
      */
