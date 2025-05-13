@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.model.users.UserDetail;
 import com.traveller.kivi.model.users.UserStats;
+import com.traveller.kivi.model.users.UserCreateUpdate;
 import com.traveller.kivi.service.UserService;
 
 import jakarta.validation.Valid;
@@ -142,6 +143,11 @@ public class UserController {
     @PostMapping("/{userId}/resetPassword")
     public UserDetail resetPassword(@PathVariable Integer userId) {
         return userService.resetPassword(userId);
+    }
+
+    @PostMapping("/{userId}/update")
+    public UserDetail updateUser(@PathVariable Integer userId, @Valid @RequestBody UserCreateUpdate userUpdate) {
+        return userService.updateUser(userId, userUpdate);
     }
 
     @GetMapping("/byEmail/{email}")

@@ -16,6 +16,7 @@ import com.traveller.kivi.model.users.User;
 import com.traveller.kivi.model.users.User.UserType;
 import com.traveller.kivi.model.users.UserDetail;
 import com.traveller.kivi.model.users.UserStats;
+import com.traveller.kivi.model.users.UserCreateUpdate;
 import com.traveller.kivi.repository.EventRepository;
 import com.traveller.kivi.repository.PostRepository;
 import com.traveller.kivi.repository.UserRepository;
@@ -200,6 +201,28 @@ public class UserService {
             System.err.println("Failed to send password reset email: " + e.getMessage());
         }
 
+        return UserDetail.fromUser(user);
+    }
+
+    public UserDetail updateUser(Integer userId, UserCreateUpdate userUpdate) {
+        User user = getUserById(userId);
+
+        if (userUpdate.firstName != null)
+            user.setFirstName(userUpdate.firstName);
+        if (userUpdate.lastName != null)
+            user.setLastName(userUpdate.lastName);
+        if (userUpdate.email != null)
+            user.setEmail(userUpdate.email);
+        if (userUpdate.username != null)
+            user.setUsername(userUpdate.username);
+        if (userUpdate.userType != null)
+            user.setUserType(userUpdate.userType);
+        if (userUpdate.languages != null)
+            user.setLanguages(userUpdate.languages);
+        if (userUpdate.password != null)
+            user.setPassword(userUpdate.password);
+
+        userRepository.save(user);
         return UserDetail.fromUser(user);
     }
 }
