@@ -41,11 +41,21 @@ public class PostService {
 
     public Post createPost(Post post) {
         Post saved = postRepository.save(post);
+
         Long totalPosts = postRepository.countByOwner_Id(post.getOwner().getId());
         achievementService.checkAndAward(
                 post.getOwner().getId(),
                 CriterionType.POST_CREATE.name(),
-                totalPosts);
+                totalPosts
+        );
+
+        //  IMAGE_UPLOAD criteria
+        Long totalUploads = postRepository.countImagesByOwner_Id(saved.getOwner().getId());
+        achievementService.checkAndAward(
+            saved.getOwner().getId(),
+            CriterionType.IMAGE_UPLOAD.name(),
+            totalUploads
+        );
 
         return saved;
     }
@@ -164,6 +174,16 @@ public class PostService {
         // Check if the user has already liked the post
         if (!post.getLikers().contains(user)) {
             post.getLikers().add(user);
+            postRepository.save(post);
+            
+            // Trigger LIKE_RECEIVE criterion 
+            Integer ownerId = post.getOwner().getId();
+            Long totalLikes =postRepository.countLikesByOwner_Id(ownerId);  
+            achievementService.checkAndAward(
+                ownerId,
+                CriterionType.LIKE_RECEIVE.name(),
+                totalLikes
+            );
         }
         return PostDetail.toPostDetail(post);
     }
@@ -175,6 +195,9 @@ public class PostService {
         // Check if the user has already liked the post
         if (post.getLikers().contains(user)) {
             post.getLikers().remove(user);
+
+            // kanka burada achievementi geri çekmedim 
+            postRepository.save(post);
         }
 
         return PostDetail.toPostDetail(post);
