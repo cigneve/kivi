@@ -15,7 +15,7 @@ import com.traveller.kivi.model.users.User;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
-    Page<Post> findByOwnerNot(Pageable pageable, User user);
+    List<Post> findByOwnerNot(User user);
 
     List<Post> findByOwner(User user);
 
