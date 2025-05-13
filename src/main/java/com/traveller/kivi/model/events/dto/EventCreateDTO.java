@@ -1,7 +1,7 @@
 // src/main/java/com/traveller/kivi/model/events/dto/EventCreateDTO.java
 package com.traveller.kivi.model.events.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class EventCreateDTO {
         e.setName(dto.name);
         e.setDetails(dto.details);
         e.setStartDate(dto.startDate);
-        e.setEndDate(dto.endDate);
+        e.setDuration(dto.duration);
         e.setLocations(locations);
         e.setStatus(Status.SCHEDULED);
         e.setLanguage(dto.language);
@@ -54,10 +54,10 @@ public class EventCreateDTO {
     public String details;
 
     @NotNull
-    public LocalDate startDate;
+    public LocalDateTime startDate;
 
     @NotNull
-    public LocalDate endDate;
+    public Integer duration; // Duration in minutes
 
     @NotNull
     @NotBlank
@@ -69,5 +69,4 @@ public class EventCreateDTO {
     public Integer skeletonId;
 
     public List<Integer> locationIds = new ArrayList<>();
-
 }

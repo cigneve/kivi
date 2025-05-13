@@ -112,14 +112,18 @@ public class EventService {
     /**
      * Updates an existing event.
      */
-    public EventDetails updateEvent(Integer eventId, Event updated) {
+    public EventDetails updateEvent(Integer eventId, EventCreateDTO updated) {
         Event existing = getEventById(eventId);
-        existing.setName(updated.getName());
-        existing.setDetails(updated.getDetails());
-        existing.setEventType(updated.getEventType());
-        existing.setStatus(updated.getStatus());
-        existing.setStartDate(updated.getStartDate());
-        existing.setEndDate(updated.getEndDate());
+        if (updated.name != null)
+            existing.setName(updated.name);
+        if (updated.details != null)
+            existing.setDetails(updated.details);
+        if (updated.eventType != null)
+            existing.setEventType(updated.eventType);
+        if (updated.startDate != null)
+            existing.setStartDate(updated.startDate);
+        if (updated.duration != null)
+            existing.setDuration(updated.duration);
         return EventDetails.toEventDetails(eventRepository.save(existing));
     }
 

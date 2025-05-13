@@ -1,6 +1,7 @@
 package com.traveller.kivi.model.events;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -52,12 +53,11 @@ public class Event {
     private Status status;
 
     @Column(nullable = false)
-
     private LocalDate created;
 
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
-    private LocalDate endDate;
+    private Integer duration; // Duration in minutes
 
     @OneToMany(cascade = CascadeType.ALL)
     private Set<EventRating> ratings = new HashSet<>();
@@ -117,12 +117,12 @@ public class Event {
         this.created = created;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     public Set<EventRating> getRatings() {
@@ -181,12 +181,12 @@ public class Event {
         return created;
     }
 
-    public LocalDate getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
+    public Integer getDuration() {
+        return duration;
     }
 
     public Status getStatus() {

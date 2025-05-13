@@ -87,9 +87,8 @@ public class EventController {
      * Updates an event.
      */
     @PutMapping("/{eventId}")
-    public EventDetails updateEvent(@PathVariable Integer eventId, @Valid @RequestBody EventCreateDTO updated) {
-        // TODO
-        throw new UnsupportedOperationException();
+    public EventDetails updateEvent(@PathVariable Integer eventId, @RequestBody EventCreateDTO updated) {
+        return eventService.updateEvent(eventId, updated);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.traveller.kivi.model.events.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,10 +37,10 @@ public class EventDetails {
     public LocalDate created;
 
     @NotNull
-    public LocalDate startDate;
+    public LocalDateTime startDate;
 
     @NotNull
-    public LocalDate endDate;
+    public Integer duration; // Duration in minutes
 
     @NotNull
     public Set<Integer> ratingIds = new HashSet<>();
@@ -80,7 +81,7 @@ public class EventDetails {
         dto.status = event.getStatus();
         dto.created = event.getCreated();
         dto.startDate = event.getStartDate();
-        dto.endDate = event.getEndDate();
+        dto.duration = event.getDuration();
         dto.ratingIds = event.getRatings().stream().map(EventRating::getId).collect(Collectors.toSet());
         dto.locations = event.getLocations().stream().map(EventLocationDTO::fromEventLocation).toList();
         dto.userIds = event.getAttendants().stream().map(User::getId).collect(Collectors.toList());
@@ -94,7 +95,6 @@ public class EventDetails {
                 .mapToInt(EventRating::getRate)
                 .average()
                 .orElse(0));
-        ;
         return dto;
     }
 }
