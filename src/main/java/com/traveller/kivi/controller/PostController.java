@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.traveller.kivi.model.posts.PostCreateDTO;
 import com.traveller.kivi.model.posts.PostDetail;
+import com.traveller.kivi.model.users.UserDetail;
 import com.traveller.kivi.service.PostService;
 
 import jakarta.validation.Valid;
@@ -91,6 +92,11 @@ public class PostController {
             @RequestParam Integer userId) {
         PostDetail dto = postService.unlikePost(postId, userId);
         return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping("/{postId}/likers")
+    public List<UserDetail> getPostLikers(@PathVariable Integer postId) {
+        return postService.getPostLikers(postId);
     }
 
 }

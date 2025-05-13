@@ -20,6 +20,7 @@ import com.traveller.kivi.model.posts.PostCreateDTO;
 import com.traveller.kivi.model.posts.PostDetail;
 import com.traveller.kivi.model.posts.PostTag;
 import com.traveller.kivi.model.users.User;
+import com.traveller.kivi.model.users.UserDetail;
 import com.traveller.kivi.repository.PostRepository;
 import com.traveller.kivi.repository.PostTagRepository;
 
@@ -189,6 +190,10 @@ public class PostService {
 
     public List<PostDetail> getAllPosts() {
         return postRepository.findAll().stream().map(PostDetail::toPostDetail).collect(Collectors.toList());
+    }
+
+    public List<UserDetail> getPostLikers(Integer postId) {
+        return getPostById(postId).getLikers().stream().map(UserDetail::fromUser).toList();
     }
 
 }
