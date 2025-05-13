@@ -58,6 +58,9 @@ public class EventService {
     @Autowired
     private EventCommentRepository commentRepository;
 
+    @Autowired
+    private EmailService emailService;
+
 /**
      * Find events by location name (case-insensitive, contains match).
      * 
@@ -135,16 +138,34 @@ public class EventService {
      */
     public EventDetails updateEvent(Integer eventId, EventCreateDTO updated) {
         Event existing = getEventById(eventId);
-        if (updated.name != null)
+        if (updated.name != null) {
             existing.setName(updated.name);
-        if (updated.details != null)
+             emailService.notifyEventNameChanged(existing);
+        }
+        if (updated.details != null) {
             existing.setDetails(updated.details);
-        if (updated.eventType != null)
-            existing.setEventType(updated.eventType);
-        if (updated.startDate != null)
+            emailService.notifyEventDetailsChanged(existing);
+        }
+        if (updated.eventType != null) {
+            existing.setEventType(updated.eventType);   
+            emailService.notifyEventTypeChanged(existing);
+        }
+            
+        if (updated.startDate != null) {
             existing.setStartDate(updated.startDate);
-        if (updated.duration != null)
-            existing.setDuration(updated.duration);
+            emailService.notifyEventDateChanged(existing);
+        }
+        if (updated.duration != null) {
+            if (updated.duration < 0) {
+                throw new IllegalArgumentException("Duration cannot be negative");
+            }
+                existing.setDuration(updated.duration);
+                emailService.notifyEventDurationChanged(existing);
+        }
+        if(updated.language != null) {
+            existing.setLanguage(updated.language);
+            emailService.notifyEventLanguageChanged(existing);
+        }
         return EventDetails.toEventDetails(eventRepository.save(existing));
     }
 
