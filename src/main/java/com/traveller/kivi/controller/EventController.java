@@ -236,4 +236,9 @@ public class EventController {
         return eventService.setEventPhoto(eventId, res);
     }
 
+    @GetMapping("/{userId}/upcomingTours")
+    public List<EventDetails> getUpcomingTours(@PathVariable Integer userId) {
+        return eventService.getUpcomingEventsByAttendant(userId);
+    }
+
 }
