@@ -18,6 +18,7 @@ public class EventSkeletonDTO {
         dto.locations = skeleton.getLocations().stream().map(EventLocationDTO::fromEventLocation).toList();
         dto.ownerId = skeleton.getOwner().getId();
         dto.type = skeleton.getEventType();
+        dto.title = skeleton.getTitle();
         return dto;
     }
 
@@ -26,6 +27,8 @@ public class EventSkeletonDTO {
 
     @NotNull
     public Integer ownerId;
+
+    public String title;
 
     @NotNull
     public List<EventLocationDTO> locations = new ArrayList<>();

@@ -29,9 +29,8 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
      * @param attendantId
      * @return
      */
-    // @Query("SELECT e FROM Event e JOIN e.attendants at WHERE at.id =
-    // :attendantId")
-    List<Event> findByAttendantsId(Integer attendantId);
+    @Query("SELECT e FROM Event e JOIN e.attendants at WHERE at.id = :attendantId")
+    List<Event> findByAttendants_Id(Integer attendantId);
 
     /**
      * Number of owned events

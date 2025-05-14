@@ -8,6 +8,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.traveller.kivi.model.events.Event;
 import com.traveller.kivi.model.events.dto.EventCommentCreateDTO;
 import com.traveller.kivi.model.events.dto.EventCommentDTO;
 import com.traveller.kivi.model.events.dto.EventCreateDTO;
@@ -136,7 +136,7 @@ public class EventController {
      * @return
      */
     @GetMapping("/attended/{userId}")
-    public List<EventDetails> getAttendedEvents(Integer userId) {
+    public List<EventDetails> getAttendedEvents(@PathVariable Integer userId) {
         return eventService.getAttendedEvents(userId);
     }
 
@@ -148,6 +148,11 @@ public class EventController {
     @PutMapping("/{eventId}/register/{userId}")
     public EventDetails registerToEvent(@PathVariable Integer eventId, @PathVariable Integer userId) {
         return eventService.registerToEvent(eventId, userId);
+    }
+
+    @PutMapping("/{eventId}/unregister/{userId}")
+    public EventDetails unregisterToEvent(@PathVariable Integer eventId, @PathVariable Integer userId) {
+        return eventService.unregisterToEvent(eventId, userId);
     }
 
     @PostMapping("/{eventId}/comments")
@@ -190,6 +195,33 @@ public class EventController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/locations/{locationId}/photo")
+    public Resource getEventLocationImage(@PathVariable Integer locationId) {
+        try {
+            return eventService.getEventLocationPhoto(locationId);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    @PostMapping(path = "/locations/{locationId}/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public EventLocationDTO setEventLocationPhoto(@PathVariable Integer locationId,
+            @RequestParam("image") MultipartFile image) {
+        Resource res;
+        try {
+            res = new InputStreamResource(image.getInputStream());
+        } catch (IOException e) {
+            throw new RuntimeException("Error getting image of Event with id: " + locationId);
+        }
+
+        return eventService.setEventLocationPhoto(locationId, res);
+    }
+
+    @GetMapping("/locations/featured")
+    public List<EventLocationDTO> getFeaturedEventLocations() {
+        return eventService.getFeaturedEventLocations();
     }
 
     @GetMapping("/locations")
@@ -239,6 +271,16 @@ public class EventController {
     @GetMapping("/{userId}/upcomingTours")
     public List<EventDetails> getUpcomingTours(@PathVariable Integer userId) {
         return eventService.getUpcomingEventsByAttendant(userId);
+    }
+
+    @GetMapping("/{eventId}/hasRated")
+    public Boolean hasUserRated(@PathVariable Integer eventId, @RequestParam Integer userId) {
+        return eventService.hasUserRated(userId, eventId);
+    }
+
+    @GetMapping("/skeletonsOf/{userId}")
+    public List<EventSkeletonDTO> getSkeletonsOfUser(@PathVariable Integer userId) {
+        return eventService.getSkeletonsOfUser(userId);
     }
 
 }

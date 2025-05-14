@@ -1,5 +1,6 @@
 package com.traveller.kivi.service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -220,6 +221,17 @@ public class EventService {
         return EventDetails.toEventDetails(event);
     }
 
+    @Transactional
+    public EventDetails unregisterToEvent(Integer eventId, Integer userId) {
+        Event event = getEventById(eventId);
+        User user = userService.getUserById(userId);
+        if (event.getAttendants().contains(user)) {
+            event.getAttendants().remove(user);
+            eventRepository.save(event);
+        }
+        return EventDetails.toEventDetails(event);
+    }
+
     public EventDetails createEvent(EventCreateDTO dto) {
         Event event;
         if (dto.skeletonId != null) {
@@ -282,7 +294,7 @@ public class EventService {
      * @return
      */
     public List<EventDetails> getAttendedEvents(Integer userId) {
-        return eventRepository.findByAttendantsId(userId).stream().map(EventDetails::toEventDetails).toList();
+        return eventRepository.findByAttendants_Id(userId).stream().map(EventDetails::toEventDetails).toList();
     }
 
     public String cancelEvent(Integer eventId) {
@@ -357,6 +369,12 @@ public class EventService {
         return EventSkeletonDTO.fromEventSkeleton(getEventById(eventId).getSkeleton());
     }
 
+    public List<EventSkeletonDTO> getSkeletonsOfUser(Integer userId) {
+        return eventSkeletonRepository.findByOwner_Id(userId).stream()
+                .map(EventSkeletonDTO::fromEventSkeleton)
+                .toList();
+    }
+
     public EventLocationDTO createEventLocation(EventLocationCreateDTO dto) {
         EventLocation location = new EventLocation();
         location.setLocation(dto.location);
@@ -410,7 +428,12 @@ public class EventService {
 
     public EventDetails setEventPhoto(Integer eventId, Resource res) {
         Event event = getEventById(eventId);
-        imageService.setImageContent(event.getImage(), res);
+        try {
+            event.setImage(imageService.createImage(res.getInputStream()));
+            eventRepository.save(event);
+        } catch (IOException e) {
+            throw new RuntimeException("Error while setting event photo", e);
+        }
         return EventDetails.toEventDetails(event);
     }
 
@@ -423,7 +446,7 @@ public class EventService {
         LocalDateTime now = LocalDateTime.now();
 
         // Get all events attended by the user
-        List<Event> attendedEvents = eventRepository.findByAttendantsId(attendantId);
+        List<Event> attendedEvents = eventRepository.findByAttendants_Id(attendantId);
 
         // Filter out events that have already ended
         return attendedEvents.stream()
@@ -432,6 +455,34 @@ public class EventService {
                     return endTime.isAfter(now);
                 }).map(EventDetails::toEventDetails)
                 .toList();
+    }
+
+    public Resource getEventLocationPhoto(Integer locationId) {
+        EventLocation location = getEventLocationById(locationId);
+        return imageService.getImageContentAsResource(location.getImage());
+    }
+
+    public EventLocationDTO setEventLocationPhoto(Integer locationId, Resource res) {
+        EventLocation location = getEventLocationById(locationId);
+        try {
+            location.setImage(imageService.createImage(res.getInputStream()));
+            locationRepository.save(location);
+        } catch (IOException e) {
+            throw new RuntimeException("Error while setting event location photo", e);
+        }
+        return EventLocationDTO.fromEventLocation(location);
+    }
+
+    public List<EventLocationDTO> getFeaturedEventLocations() {
+        return locationRepository.findAll().stream().filter(EventLocation::isFeatured)
+                .map(EventLocationDTO::fromEventLocation)
+                .toList();
+    }
+
+    public Boolean hasUserRated(Integer userId, Integer eventId) {
+        Event event = getEventById(eventId);
+        return event.getRatings().stream()
+                .anyMatch(rating -> rating.getOwner().getId().equals(userId));
     }
 
 }

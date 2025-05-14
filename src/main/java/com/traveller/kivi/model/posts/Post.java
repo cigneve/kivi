@@ -1,6 +1,7 @@
 package com.traveller.kivi.model.posts;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,7 +40,7 @@ public class Post {
 
     private String body;
 
-    private LocalDate created = LocalDate.now();
+    private LocalDateTime created;
 
     @ManyToOne
     @NotNull
@@ -54,7 +55,7 @@ public class Post {
 
     @PrePersist
     protected void onCreate() {
-        this.created = LocalDate.now();
+        this.created = LocalDateTime.now();
     }
 
     public Post(@NotNull User owner, @NotBlank String body, Image image) {
@@ -63,7 +64,7 @@ public class Post {
         this.image = image;
     }
 
-    public LocalDate getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
@@ -115,7 +116,7 @@ public class Post {
         this.image = image;
     }
 
-    public void setCreated(LocalDate created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 }

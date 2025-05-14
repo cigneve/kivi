@@ -37,12 +37,25 @@ public class UserService {
     @Autowired
     private EmailService emailService;
 
-    public User createUser(@Valid User user) {
+    public UserDetail createUser(@Valid UserCreateUpdate userDTO) {
+        User user = new User();
+        if (userDTO.firstName != null)
+            user.setFirstName(userDTO.firstName);
+        if (userDTO.lastName != null)
+            user.setLastName(userDTO.lastName);
+        if (userDTO.email != null)
+            user.setEmail(userDTO.email);
+        if (userDTO.username != null)
+            user.setUsername(userDTO.username);
+        if (userDTO.password != null)
+            user.setPassword(userDTO.password);
+        if (userDTO.userType != null)
+            user.setUserType(userDTO.userType);
         if (user.getProfilePicture() == null) {
             user.setProfilePicture(imageService.getDefaultImage());
         }
 
-        return userRepository.save(user);
+        return UserDetail.fromUser(userRepository.save(user));
     }
 
     public Page<UserDetail> getUsersByUserType(UserType userType, Pageable pageable) {

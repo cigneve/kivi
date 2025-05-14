@@ -1,6 +1,6 @@
 package com.traveller.kivi.model.events.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.traveller.kivi.model.events.EventComment;
 
@@ -26,7 +26,7 @@ public class EventCommentDTO {
     @NotNull
     public Integer ownerId;
 
-    public LocalDate commentDate;
+    public LocalDateTime commentDate;
 
     public String commentBody;
 }

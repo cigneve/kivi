@@ -1,9 +1,11 @@
 package com.traveller.kivi.service;
 
 import java.io.InputStream;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.assertj.core.util.NaturalOrderComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -102,12 +104,14 @@ public class PostService {
      */
     public List<PostDetail> getPostsOfOthers(Integer userId) {
         User user = userService.getUserById(userId);
-        return postRepository.findByOwnerNot(user).stream().map(PostDetail::toPostDetail).toList();
+        return postRepository.findByOwnerNot(user).stream()
+                .sorted((o1, o2) -> o1.getCreated().compareTo(o2.getCreated())).map(PostDetail::toPostDetail).toList();
     }
 
     public List<PostDetail> getPostsOfUser(Integer userId) {
         User user = userService.getUserById(userId);
-        return postRepository.findByOwner(user).stream().map(PostDetail::toPostDetail).collect(Collectors.toList());
+        return postRepository.findByOwner(user).stream().sorted((o1, o2) -> o1.getCreated().compareTo(o2.getCreated()))
+                .map(PostDetail::toPostDetail).collect(Collectors.toList());
     }
 
     /**
@@ -209,7 +213,8 @@ public class PostService {
     }
 
     public List<PostDetail> getAllPosts() {
-        return postRepository.findAll().stream().map(PostDetail::toPostDetail).collect(Collectors.toList());
+        return postRepository.findAll().stream().sorted((o1, o2) -> o1.getCreated().compareTo(o2.getCreated()))
+                .map(PostDetail::toPostDetail).collect(Collectors.toList());
     }
 
     public List<UserDetail> getPostLikers(Integer postId) {

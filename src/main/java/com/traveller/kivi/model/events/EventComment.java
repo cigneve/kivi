@@ -1,6 +1,6 @@
 package com.traveller.kivi.model.events;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.traveller.kivi.model.users.User;
 
@@ -27,7 +27,7 @@ public class EventComment {
     private User owner;
 
     @NotNull
-    private LocalDate commentDate;
+    private LocalDateTime commentDate;
 
     @NotNull
     @NotEmpty
@@ -35,7 +35,7 @@ public class EventComment {
 
     @PrePersist
     protected void onCreate() {
-        this.commentDate = LocalDate.now();
+        this.commentDate = LocalDateTime.now();
     }
 
     public Integer getId() {
@@ -54,11 +54,11 @@ public class EventComment {
         this.owner = owner;
     }
 
-    public LocalDate getCommentDate() {
+    public LocalDateTime getCommentDate() {
         return commentDate;
     }
 
-    public void setCommentDate(LocalDate commentDate) {
+    public void setCommentDate(LocalDateTime commentDate) {
         this.commentDate = commentDate;
     }
 

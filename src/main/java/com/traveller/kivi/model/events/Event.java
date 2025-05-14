@@ -53,7 +53,7 @@ public class Event {
     private Status status;
 
     @Column(nullable = false)
-    private LocalDate created;
+    private LocalDateTime created;
 
     private LocalDateTime startDate;
 
@@ -177,7 +177,7 @@ public class Event {
         return eventType;
     }
 
-    public LocalDate getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
@@ -227,7 +227,7 @@ public class Event {
 
     @PrePersist
     protected void onCreate() {
-        this.created = LocalDate.now();
+        this.created = LocalDateTime.now();
     }
 
 }

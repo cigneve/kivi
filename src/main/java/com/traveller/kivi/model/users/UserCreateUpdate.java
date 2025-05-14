@@ -10,9 +10,7 @@ import jakarta.validation.constraints.Pattern;
 public class UserCreateUpdate {
     @Email
     public String email;
-    @Pattern(regexp = "[^\\s]+")
     public String password;
-    @Pattern(regexp = "[^\\s]+")
     public String username;
     public String firstName;
     public String lastName;

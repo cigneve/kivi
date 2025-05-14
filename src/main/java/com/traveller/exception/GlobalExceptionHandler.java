@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
             });
 
         } else {
-            errors.put("error", e.getMessage());
+            errors.put("error", e.getCause().getMessage());
         }
         HttpStatusCode status = HttpStatus.INTERNAL_SERVER_ERROR;
         if (e instanceof org.springframework.web.server.ResponseStatusException) {

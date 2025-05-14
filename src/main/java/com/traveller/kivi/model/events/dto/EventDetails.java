@@ -34,7 +34,7 @@ public class EventDetails {
     public Status status;
 
     @NotNull
-    public LocalDate created;
+    public LocalDateTime created;
 
     @NotNull
     public LocalDateTime startDate;
