@@ -113,7 +113,7 @@ public class Event {
         this.id = id;
     }
 
-    public void setCreated(LocalDate created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
