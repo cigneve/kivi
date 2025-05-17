@@ -40,5 +40,12 @@ Group 3G
 </table>
 
 ## Application Details
-TODO
-## Preview
+Server application for a travelling social media app.
+
+## Installation instructions
+To get the server up:
+1. Install [Docker](https://www.docker.com/get-started/)
+2. Start docker
+3. Clone the repo
+4. create an `.env` file based on `./.env.example` to enable the email functionality
+5. run `./mvnw clean spring-boot:run`
